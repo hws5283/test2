@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom'
 import {MapContainer,TileLayer, Marker, Popup} from 'react-leaflet'
 import "leaflet/dist/leaflet.css"
 import './App.css'
+import JSONDATA from "./popUpXY.json"
 
 //component 3
 export default function MapDisplay(){
     //postion of marker on the map display 
-    const position = [0, 0];
+    const position = [9, -22];
     const tileUrl = './cuts/{z}/{x}/{y}.png';
     return(
         <div classname = "mapDisplay">
@@ -20,13 +21,14 @@ export default function MapDisplay(){
                      Map image assets MUST BE IN PUBLIC FOLDER TO BE RENDERED by TileLayer component, have no idea why 
                 */
             }
-            <MapContainer center={position} zoom={13} scrollWheelZoom={false} >
-            <TileLayer minZoom={1} maxZoom = {2}
+            <MapContainer center={position} zoom={13} scrollWheelZoom={false} style = {{height: "900px", width: "900px"}}>
+            <TileLayer minZoom={0} maxZoom = {4}
                 url={tileUrl}
             />
-            <Marker position={position}>
-                <Popup>
-                     test popup <br /> Easily customizable.
+            <Marker position={[JSONDATA[0].positionY, JSONDATA[0].positionX]}>
+                <Popup title = "Lake Evan">
+                    <img src ="./logo192.png" alt = "testing"></img>
+                    {JSONDATA[0].title}
                 </Popup>
             </Marker>
            </MapContainer>
