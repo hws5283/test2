@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css"
 import './App.css'
 import JSONDATA from "./popUpXY.json"
 
+//CURRENTLY NOT IN USE 
 //component 3
 export default function MapDisplay(){
     //postion of marker on the map display 
@@ -19,18 +20,22 @@ export default function MapDisplay(){
                     MUST IMPORT MapContainer***
                     IMPORTANT NOTE ******
                      Map image assets MUST BE IN PUBLIC FOLDER TO BE RENDERED by TileLayer component, have no idea why 
+
+                     <Marker position={[JSONDATA[0].positionY, JSONDATA[0].positionX]}>
+                        <Popup title = "Lake Evan">
+                            <img src ="./logo192.png" alt = "testing"></img>
+                            {JSONDATA[0].title}
+                        </Popup>
+                    </Marker>
                 */
             }
-            <MapContainer center={position} zoom={13} scrollWheelZoom={false} style = {{height: "900px", width: "900px"}}>
-            <TileLayer minZoom={0} maxZoom = {4}
-                url={tileUrl}
-            />
-            <Marker position={[JSONDATA[0].positionY, JSONDATA[0].positionX]}>
-                <Popup title = "Lake Evan">
-                    <img src ="./logo192.png" alt = "testing"></img>
-                    {JSONDATA[0].title}
-                </Popup>
-            </Marker>
+            <MapContainer center={position} zoom={13} scrollWheelZoom={true} style = {{height: "900px", width: "900px"}}>
+                <TileLayer minZoom={0} maxZoom = {4}
+                    url={tileUrl}
+                />
+                <Marker position={position}>
+                    <Popup>Hello</Popup>
+                </Marker>
            </MapContainer>
         </div>
     )

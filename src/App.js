@@ -13,15 +13,12 @@ function App() {
       <div className = "navbarComponent">
           <Navbar />
       </div>
-    <div className = "mainDisplay">
-      
-        <div className='LeftSearchComponent'>
-           <LeftSearch/>
-        </div>
-        <div className='MapDisplayComponent'>
-          <MapDisplay/>
-        </div>
-    </div>
+      <div className='LeftSearchComponent'>
+          <div className = "try"> 
+            <LeftSearch/>
+          </div>  
+      </div>
+    
     </div>
   )
 
