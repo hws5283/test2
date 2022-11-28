@@ -142,7 +142,21 @@ export default function LeftSearch(){
                     <Popup>Hello</Popup>
                 </Marker>
            </MapContainer>
-        </div>     
+        </div> 
+
+        <div className='atlas' style={{'border-style': "solid"}}> 
+                <h4 style={{'padding-top': "10px", 'padding-bottom': "10px", 'padding-left': '86px'}}>Atlas</h4>
+
+                {JSONDATA.sort((a, b) => a.location > b.location).map((val,key)=>{
+                    return (
+                        <div>
+                            <button className = 'reactButton' title = {val.location} onClick={()=>clickHandler(val.location)}>
+                            {val.location}
+                            </button>
+                        </div>
+                    )
+                })}
+        </div>    
     </div> //END MAIN DIV
     )
 }
