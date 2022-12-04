@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from "./Navbar"
+import NavbarBoot from "./Navbar"
 import "leaflet/dist/leaflet.css"
 import "./App.css"
 import LeftSearch from './leftSearch';
@@ -11,7 +11,7 @@ function App() {
   return(
     <div>
       <div className = "navbarComponent">
-          <Navbar />
+          <NavbarBoot />
       </div>
       <div className='LeftSearchComponent'>
           <div className = "try"> 

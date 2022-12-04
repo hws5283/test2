@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM, { findDOMNode } from 'react-dom'
 import "leaflet/dist/leaflet.css"
 import './App.css'
 import { useState } from 'react'
@@ -16,8 +16,10 @@ import cavernMarker from './navImages/cavern.webp'
 import lakeMarker from './navImages/lakeIcon.webp'
 import forestMarker from './navImages/forestIcon.webp'
 import mountainMarker from './navImages/mountainIcon.png'
-import L from 'leaflet'
-
+import L, { marker } from 'leaflet'
+import Atlas from './Atlas'
+import "./atlas.css"
+import "./button.css"
 
 //component - just a js function returning jsx 
 //1 COMPONENT 1 FILE ***
@@ -32,10 +34,14 @@ export default function LeftSearch(){
     const tileUrl = './cuts/{z}/{x}/{y}.png';
 
     const mapRef = useRef(null); //map reference 
-    const marker1Ref = useRef(null);   //ref for marker 1
+    const markerRefs = useRef({});   //ref array ***
+    const LakeEvanRef = useRef(null);   //ref for marker 1
     const marker2Ref = useRef(null);   //ref for marker 2 ect...
     const marker3Ref = useRef(null);
     const marker4Ref = useRef(null);
+
+    var data;
+    var records;
 
     const cavernIcon = new L.Icon({
         iconUrl:cavernMarker,
@@ -57,17 +63,15 @@ export default function LeftSearch(){
         iconSize:[26,26]
     });
 
-
-    //function set to all buttons generated in search bar
     //parameter "title" is text of each button 
     //better to define these functions not inline 
     const clickHandler =(title) =>{
 
         inputRef.current.value = title;  //set input field to button click using hook 
-        const myMarker = marker1Ref.current; //the marker ref
-        const myMap = mapRef.current;           //map ref
-        if (myMarker){
-            myMarker.openPopup();           //show the popup display 
+        const markerToOpen = markerRefs.current[title]; //the marker ref
+        const myMap = mapRef.current;           //map ref - ALWAYS THE SAME
+        if (markerToOpen){
+             markerToOpen.openPopup();           //show the popup display 
         }
 
         if (!myMap) {
@@ -78,16 +82,11 @@ export default function LeftSearch(){
         
     }
 
-    const testfunc = (testing) =>{
-        console.log(testing);
-       
-    }
-
     return(
         //MAIN DIV, utilizes flex 
         <div className = "leftSearch">  
        
-        <div className = "test3">
+        <div className = "test3" key = "testing">
             
             <input ref = {inputRef} id = "userInputBar"type = "text" placeholder = "Try searching a location!" onChange = {event => {setSearchTerm(event.target.value)}}/>
           
@@ -102,18 +101,21 @@ export default function LeftSearch(){
             //Adding event listener for click events on all generated buttons 
             
                  return (
-                    <div>
-                        <button className = 'reactButton' title = {val.location} onClick={()=>clickHandler(val.location)}>
+              
+                    <div className = "buttonDiv">
+                        <button className = 'glow-button' title = {val.location} onClick={()=>clickHandler(val.location)}>
                          {val.location}
                         </button>
                     </div>
+
+          
                  )
                    
             
         })}
         </div>
 
-        <div>    
+        <div className = "mapDisplay">    
             <MapContainer 
                 whenCreated={(map) => {
                     mapRef.current = map;
@@ -121,28 +123,90 @@ export default function LeftSearch(){
                 center={position} 
                 zoom={13} 
                 scrollWheelZoom={true} 
-                style = {{height: "800px", width: "900px"}}>
+                style = {{height: "800px", width: "800px"}}>
             
-                <TileLayer minZoom={0} maxZoom = {4}
+                <TileLayer minZoom={2} maxZoom = {4} continuousWorld = {false} noWrap = {true}
                     url={tileUrl}
                 />
-                <Marker ref = {marker1Ref} icon = {lakeIcon} position={[mapData[0].positionY,mapData[0].positionX]} title = {mapData[0].title}>
-                    <Popup>Hello</Popup>
+                <Marker 
+                     id = "Lake Evan" 
+                     icon = {lakeIcon} 
+                     position={[mapData[0].positionY,mapData[0].positionX]} 
+                     title = {mapData[0].title}
+                     ref = {(ref)=>{
+                        markerRefs.current[mapData[0].title] = ref;
+                     }} 
+                     >
+                    <Popup>
+                        <img src = {require("./navImages/forestIcon.webp")} alt = "react logo"
+                        width = "100px" height={"100px"}/>        
+                        <p>The description of map point " Lake Evan "</p>
+                    </Popup>
                 </Marker>
                 
-                <Marker ref = {marker2Ref} icon = {forestIcon} position={[17,-15]} title = {mapData[1].title}>
+                <Marker icon = {forestIcon} 
+                        position={[17,-15]} 
+                        title = {mapData[1].title}
+                        ref = {(ref)=>{
+                            markerRefs.current[mapData[1].title] = ref;
+                        }}
+                        >
                     <Popup>Hello</Popup>
                 </Marker>
 
-                <Marker ref = {marker2Ref} icon = {cavernIcon} position={[16,-30]} title = {mapData[2].title}>
+                <Marker 
+                ref = {marker3Ref} icon = {lakeIcon} position={[-30, 80]} title = {mapData[2].title}>
+                    <Popup>
+                        <p>
+                           
+                        </p>
+                        <img src = "" alt = "Lake Leonard">
+                        </img>
+                        <p>
+                           
+                        </p>
+                    </Popup>
+                </Marker>
+
+                <Marker ref = {marker3Ref} icon = {cavernIcon} position={[16,-30]} title = {mapData[2].title}>
                     <Popup>Hello</Popup>
                 </Marker>
 
-                <Marker ref = {marker2Ref} icon = {mountainIcon} position={[23,-29]} title = {mapData[3].title}>
+                <Marker ref = {marker4Ref} icon = {mountainIcon} position={[23,-29]} title = {mapData[3].title}>
                     <Popup>Hello</Popup>
                 </Marker>
+
+                <Marker ref = {marker4Ref} icon = {lakeIcon} position={[30,-15]} title = {"Lake Echo"}>
+                    <Popup>Hello</Popup>
+                </Marker>
+
+                <Marker ref = {marker4Ref} icon = {lakeIcon} position={[30,-50]} title = {"Capriotti Sea"}>
+                    <Popup>Hello</Popup>
+                </Marker>
+
+                <Marker ref = {marker4Ref} icon = {lakeIcon} position={[40,-9]} title = {"Katie Point"}>
+                    <Popup>Hello</Popup>
+                </Marker>
+
+                <Marker ref = {marker4Ref} icon = {lakeIcon} position={[40,-9]} title = {"Capriotti Sea"}>
+                    <Popup>Hello</Popup>
+                </Marker>
+
+                <Marker ref = {marker4Ref} icon = {lakeIcon} position={[50,-9]} title = {"Capriotti Sea"}>
+                    <Popup>Hello</Popup>
+                </Marker>
+
+                <Marker ref = {marker4Ref} icon = {lakeIcon} position={[45,-8]} title = {"Heckman Hill"}>
+                    <Popup>Hello</Popup>
+                </Marker>
+
+
            </MapContainer>
-        </div>     
+        </div>   
+
+        <div className = "atlas">
+            <Atlas></Atlas>
+        </div>  
     </div> //END MAIN DIV
     )
 }

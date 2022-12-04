@@ -1,17 +1,33 @@
 .leftSearch{
     font-family: Arial, Helvetica, sans-serif;
     display:flex;
+    
+}
+.test3{
+    background-color: rgb(53, 50, 49);
+    width:320px; 
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(222, 184, 135);
+    height: 800px;
+    
+}
+
+.buttonDiv{
+    padding-left: 40px;
+    padding-top: 10px;
+   
 }
 
 .leftSearch input{
-    width:230px;
     height: 40px;
     font-size: 20px;
- 
+    width:320px;
 }
-.reactButton{
-    width: 230px;
-    background-color: rgb(242,255,152)
+
+.mapDisplay{
+    background-color: rgb(53, 50, 49);
 }
+
 
 

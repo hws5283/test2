@@ -7,7 +7,7 @@ body{
 }
 
 .nav{
-    background-color: #333;
+    background-color: rgb(53, 50, 49);
     color:white;
     display:flex;
     height: 60px;
