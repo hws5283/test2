@@ -24,9 +24,9 @@
     font-size: 20px;
     width:320px;
 }
-
-.mapDisplay{
-    background-color: rgb(53, 50, 49);
+.reactButton{
+    width: 230px;
+    background-color: rgb(242,255,152)
 }
 
 

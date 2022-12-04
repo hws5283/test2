@@ -202,11 +202,7 @@ export default function LeftSearch(){
 
 
            </MapContainer>
-        </div>   
-
-        <div className = "atlas">
-            <Atlas></Atlas>
-        </div>  
+        </div>     
     </div> //END MAIN DIV
     )
 }
