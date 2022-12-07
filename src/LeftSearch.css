@@ -8,7 +8,7 @@
     width:320px; 
     overflow-y: scroll;
     scrollbar-width: thin;
-    scrollbar-color: rgb(222, 184, 135);
+    scrollbar-width: rgb(222, 184, 135);
     height: 800px;
     
 }

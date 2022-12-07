@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {MapContainer,TileLayer, Marker, Popup} from 'react-leaflet'
 import "leaflet/dist/leaflet.css"
-import './App.css'
 import JSONDATA from "./popUpXY.json"
 
 //CURRENTLY NOT IN USE 

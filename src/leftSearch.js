@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import ReactDOM, { findDOMNode } from 'react-dom'
 import "leaflet/dist/leaflet.css"
-import './App.css'
 import { useState } from 'react'
 import JSONDATA from "./mapLocations.json"
 import mapData from "./popUpXY.json"
@@ -116,6 +115,7 @@ export default function LeftSearch(){
         </div>
 
         <div className = "mapDisplay">    
+        {/*responsible for creating map instance and providing to child components, props used as map options  */}
             <MapContainer 
                 whenCreated={(map) => {
                     mapRef.current = map;
@@ -125,7 +125,7 @@ export default function LeftSearch(){
                 scrollWheelZoom={true} 
                 style = {{height: "800px", width: "800px"}}>
             
-                <TileLayer minZoom={2} maxZoom = {4} continuousWorld = {false} noWrap = {true}
+                <TileLayer minZoom={2} maxZoom = {4} noWrap = {true}
                     url={tileUrl}
                 />
                 <Marker 
@@ -160,10 +160,16 @@ export default function LeftSearch(){
                         <p>
                            
                         </p>
-                        <img src = "" alt = "Lake Leonard">
+                        <img src = "https://res.cloudinary.com/dog5jmb4w/image/upload/v1666634868/SDImageFolder/LakeLeonard_milnsc.png" alt = "Lake Leonard">
                         </img>
-                        <p>
-                           
+                        <p>    
+                        Lake Leonard Leonard who also answers to Kenny, 
+                        Lenny, and Leonard when he does listen was originally 
+                        christened Waffles by the pope or whomever runs that homeless 
+                        shelter for cats they call the Humane Society. Leonard is now in residence 
+                        number three since I got him.  He does not adjust quickly!  
+                        But he is a good boy and I love him as much as I can love a cat. 
+                        (which is actually quite a bit)" 
                         </p>
                     </Popup>
                 </Marker>

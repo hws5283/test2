@@ -1,9 +1,7 @@
 import React from 'react';
-import NavbarBoot from "./Navbar"
+import NavbarBoot from "./components/Navbar"
 import "leaflet/dist/leaflet.css"
-import "./App.css"
 import LeftSearch from './leftSearch';
-import MapDisplay from './mapDisplay';
 //app.css currently has no effect....
 //send to index.js to be rendered
 //mainDisplay div is flex parent, leftsearch and map children flex items
@@ -13,12 +11,6 @@ function App() {
       <div className = "navbarComponent">
           <NavbarBoot />
       </div>
-      <div className='LeftSearchComponent'>
-          <div className = "try"> 
-            <LeftSearch/>
-          </div>  
-      </div>
-    
     </div>
   )
 
