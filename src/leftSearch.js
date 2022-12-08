@@ -90,7 +90,9 @@ export default function LeftSearch(){
             
             <input ref = {inputRef} id = "userInputBar"type = "text" placeholder = "Try searching a location!" onChange = {event => {setSearchTerm(event.target.value)}}/>
           
-             {JSONDATA.filter(val=>{
+             {JSONDATA.sort((a, b) => {
+                    return a.location.localeCompare(b.location);
+                }).filter(val=>{
                  if(searchTerm ===""){
                      return val
                  }else if (val.location.toLowerCase().includes(searchTerm.toLowerCase())){

@@ -1,4 +1,21 @@
 .atlas{
-    background-color: rgb(222, 184, 135);
-    width:350px;
+    background-color: rgb(53, 50, 49);
+    width:310px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(222, 184, 135);
+    height: 800px;
+    
+}
+
+.title{
+    font-size: 30px;
+    font-weight: bold;
+    color: rgb(222, 184, 135);
+    padding-top: 10px;
+    text-align: center;
+}
+
+.test{
+    padding-bottom: 20px;
 }

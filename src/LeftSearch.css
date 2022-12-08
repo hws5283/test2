@@ -5,12 +5,12 @@
 }
 .test3{
     background-color: rgb(53, 50, 49);
-    width:320px; 
+    width:310px; 
     overflow-y: scroll;
     scrollbar-width: thin;
     scrollbar-color: rgb(222, 184, 135);
     height: 800px;
-    
+    padding-bottom: 20px;
 }
 
 .buttonDiv{
