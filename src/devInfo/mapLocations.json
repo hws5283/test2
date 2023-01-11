@@ -23,5 +23,11 @@
 {"location": "Willis Waters", "id":22},
 {"location": "Norm + Agnes Open Ocean", "id":23},
 {"location": "Great Jim O.Northern Expanse", "id":24},
-{"location": "Emily Woods", "id":25}
+{"location": "Emily Woods", "id":25},
+{"location": "Capriotti Sea", "id": 26},
+{"location": "Kris Cavern", "id": 27},
+{"location": "Palmiero Pass", "id": 28},
+{"location": "Lake Leonard", "id": 29},
+{"location": "Katie Point", "id": 30},
+{"location": "Heckman Hill", "id": 31}
 ]
