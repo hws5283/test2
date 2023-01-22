@@ -1,15 +1,22 @@
 .buttonDiv{
     overflow-y: scroll;
-    height:800px;
+    height:680px;
     width: 355px;
     background-color: rgb(53, 50, 49);
     padding-right: 20px;
+    padding-left:20px;
 }
 
 .h1Regions{
     font-family: sans-serif;
     color:  rgba(255, 255, 255, 0.8);
     background-color: rgb(91, 133, 102);
+
+}
+
+.h1Regions:hover{
+    color: rgba(255, 255, 255, 1);
+    box-shadow: 0 5px 15px rgb(91, 133, 102);
 }
 
 .headerBtn{

@@ -1,0 +1,20 @@
+.mapControl{
+    background-color: rgb(53, 50, 49);
+    height:120px;
+    width:355px;
+    display:flex;
+}
+
+.controlBtn{
+    height: 80px;
+    width: 80px;
+    background-color: rgb(194, 148, 132)
+}
+.controlBtn:hover{
+    color: rgba(255, 255, 255, 1);
+    box-shadow: 0 5px 15px rgb(194, 148, 132)
+}
+.leftBtn{
+    padding-left:20px;
+    padding-top: 20px;
+}

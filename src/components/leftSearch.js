@@ -11,24 +11,25 @@ const LeftSearch = (props) => {
     //always holds the full list of locations 
     const buttonTitles = props.locations;
     //VALUE OF SEARCH BAR - input holds data submited by user in the search component 
-    const [input,setInput] = useState('');
+   // const [input,setInput] = useState('');
 
+   //WANT THIS STATE TO CAUSE RE-EVALUATION OF COMPONENT
     const [match, setMatch] = useState(buttonTitles);
 
     //passed to search component 
     const searchInputHandler = inputChild => {
 
         //set input of user 
-        setInput(inputChild);
+       // setInput(inputChild);
 
-        if(inputChild !== ''){
+       if(inputChild === ""){
+        setMatch(buttonTitles);
+       }
+       else{
             const results = buttonTitles.filter((entry) => {
             return entry.location.toLowerCase().startsWith(inputChild.toLowerCase());
             })
             setMatch(results);
-        }
-        else{
-            setMatch(buttonTitles);
         }
     }
 
@@ -40,10 +41,12 @@ const LeftSearch = (props) => {
              <Search
                 onInputChange = {searchInputHandler}
              />
-             <div className = "buttonDiv">
+             <div className = "leftbuttonDiv">
                 {match.map((loc) =>(
                     <ButtonComp
+                        key = {loc.location}
                         label = {loc.location}
+                        buttonEvent = {props.eventFunction}
                     />
                 ))}
              </div>

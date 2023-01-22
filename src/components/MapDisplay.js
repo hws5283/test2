@@ -1,51 +1,34 @@
-import {MapContainer,TileLayer, Marker, Popup, Polyline,  Rectangle} from 'react-leaflet'
-import L from 'leaflet'
-import {useRef} from 'react'
-import MapRef from './MapRef'
+import {MapContainer,TileLayer, Marker, Popup, useMap, LayerGroup, Circle, CircleMarker} from 'react-leaflet'
+import L, { map, marker } from 'leaflet'
+import {useRef, useEffect, useState} from 'react'
 import cavernMarker from '../navImages/cavern.webp'
 import lakeMarker from '../navImages/lakeIcon.webp'
 import forestMarker from '../navImages/forestIcon.webp'
 import mountainMarker from '../navImages/mountainIcon.png'
 
+import LeftSearch from './leftSearch'
+import MapButtons from './MapButtons'
+import Atlas from './Atlas'
+import '../styles/mapdisplay.css'
+import Data from '../devInfo/mapLocations'
 //This component displays the react leaflet map 
 
 function MapDisplay(props){
 
-    const mapPass = (theMap) =>{
-        const test = theMap;
-    };
-
-    //map reference - leaflet map instance created by MapContainer component 
-    const mapRef = useRef(null);
-
-    //lat and longitude, latitude longitude 
-    // [0,0] dead center of map 
-    const rectangle = [
-        [-50, 60],
-        [0, -30],
-      ]
-
-    const rectangle2 = [
-        [20, -80],
-        [-40, -40]
+    const markerRefs = useRef({});   //give useRef an array 
+    const layerGroup = useRef();
+    const testLayer = useRef();
+    const [clickedMarker, setMarker] = useState();
+    //the map ref
+    const testRef= useRef();
+    const center = [0,0];
+    const fillBlueOptions = { Color: 'blue'};
+    const bounds = [
+        [100,-185],
+        [-100, 185],
     ]
 
-    var latlngs = [
-        [-50,10],
-        [-50, -35],
-        [-30, -40],
-        [0, -40],
-        [8, -30],
-        [0,0],
-        [0,60],
-        [-25,60],
-        [-30,50],
-        [-20,40],
-        [-25,30],
-        [-50,10]
-    
-    ];
-
+    //source of map images
     const tileUrl = '../cuts/{z}/{x}/{y}.png';
 
     const lakeIcon = new L.Icon({
@@ -53,22 +36,75 @@ function MapDisplay(props){
         iconSize:[26,26]
     });
 
+    //hook executes after component renders -> function is our "effect"
+    useEffect(()=>{
+        console.log(testRef.current);
+    }, [testRef])
+
+     //utilizes react leaflet events 
+     const markerClick = (test) =>{
+       setMarker(test);
+     }
+
+    //handles button clicks from leftsearch component (function passed as prop)
+    //ultimately calls in button components reaches here
+    //react leaflet automatically pans to these markers on activation 
+    const clickHandler = (title) =>{
+        const markerToOpen = markerRefs.current[title]; //the marker ref of specific value of button clicked
+        if (markerToOpen){
+             markerToOpen.openPopup();           //show the popup display 
+             console.log("its updating");
+        }
+    }
+
+    //center map
+    const centerHandler = () => {
+       testRef.current.flyTo(center, 2, {duration:2}); 
+    }
+
+    //zoom to max zoom level
+    const zoomInHandler = () =>{
+        testRef.current.setZoom(4);
+    };
+
+    //zoom out to lowest zoom level 
+    const zoomOutHandler= () =>{
+        testRef.current.setZoom(2);
+    }
+   
+    const testLayerFunction = () =>{
+        layerGroup.current.removeLayer(testLayer.current);
+    }
+    /*
+        <Circle center = {[5,-110]} pathOptions = {fillBlueOptions} radius = {2000000}></Circle>
+        <Circle center = {[33,60]} pathOptions = {fillBlueOptions} radius = {4000000}></Circle>
+        <Circle center = {[50,-80]} pathOptions = {fillBlueOptions} radius = {3000000}></Circle>
+    */
+
     return(
+
+    <div className = "mainDiv">
+        <div>
+            <LeftSearch locations = {Data} eventFunction = {clickHandler}></LeftSearch>
+            <button onClick = {()=>{testLayerFunction()}}>testing</button>
+        </div>
         <div className = "mapDisplay">    
         {/*responsible for creating map instance and providing to child components, props used as map options  */
         //NOTE - react leaflet is providing mapping to leaflet js with the use of components MUST LOOK AT BOTH DOCUMENTATIONS
         }
             <MapContainer 
-                whenCreated={(map) => {
-                  mapRef.current = map;
-                }} 
+                ref = {testRef}
+                maxBounds = {bounds}
                 center={[9,-22]} 
                 zoom={13} 
                 scrollWheelZoom={true} 
                 style = {{height: "800px", width: "800px"}}
                >
-                <MapRef function = {mapPass}></MapRef>
-            
+
+                <LayerGroup ref = {layerGroup}>
+                    <Circle ref = {testLayer} center = {[-20,15]} pathOptions ={fillBlueOptions} radius = {4600000}><Popup>Shadeck Forest Description</Popup></Circle>
+                </LayerGroup>
+    
                 <TileLayer minZoom={2} maxZoom = {4} noWrap = {true}
                     url={tileUrl}
                 />
@@ -76,11 +112,16 @@ function MapDisplay(props){
                 <Marker
                         id = "Lake Leonard"
                         icon = {lakeIcon} 
-                        position={[-30, 80]} 
-                        //ref = {(ref)=>{
-                         //   markerRefs.current["Lake Leonard"] = ref;
-                        //}} 
-                        >
+                        position={[-28, 80]} 
+                        ref = {(ref)=>{
+                             markerRefs.current["Lake Leonard"] = ref;
+                        }} 
+                        eventHandlers={{
+                            click: (e) => {
+                              markerClick("Lake Leonard");
+                            }
+                        }}
+                    >
                     <Popup>
                         <h2>Lake Leonard</h2>
                         <img src = {"https://res.cloudinary.com/dog5jmb4w/image/upload/v1666634868/SDImageFolder/LakeLeonard_milnsc.png"} alt = "Lake Leonard">
@@ -94,11 +135,248 @@ function MapDisplay(props){
                         </p>
                     </Popup>
                 </Marker>
-                
-                <Polyline positions = {latlngs}></Polyline>
-            
+
+                <Marker
+                    icon = {lakeIcon}
+                    position = {[15,-25]}
+                    ref = {(ref)=>{
+                        markerRefs.current["Lake Evan"] = ref;
+                   }} 
+                   eventHandlers={{
+                    click: (e) => {
+                      markerClick("Lake Evan");
+                    }
+                }}
+                >
+                    <Popup>
+                    <h2>Lake Evan</h2>
+                        <p>    
+                            testing
+                        </p>
+
+                    </Popup>
+                </Marker>
+
+                <Marker
+                    icon = {lakeIcon}
+                    position = {[69,109]}
+                    ref = {(ref)=>{
+                        markerRefs.current["Lake Evan"] = ref;
+                   }} 
+                   eventHandlers={{
+                    click: (e) => {
+                      markerClick("Lake Evan");
+                    }
+                }}
+                >
+                    <Popup>
+                    <h2>Lake Evan</h2>
+                        <p>    
+                            testing
+                        </p>
+
+                    </Popup>
+                </Marker>
+
+                <Marker
+                    icon = {lakeIcon}
+                    position = {[65,110]}
+                    ref = {(ref)=>{
+                        markerRefs.current["Lake Evan"] = ref;
+                   }} 
+                   eventHandlers={{
+                    click: (e) => {
+                      markerClick("Lake Evan");
+                    }
+                }}
+                >
+                    <Popup>
+                    <h2>Lake Evan</h2>
+                        <p>    
+                            testing
+                        </p>
+
+                    </Popup>
+                </Marker>
+
+                <Marker
+                    icon = {lakeIcon}
+                    position = {[60,90]}
+                    ref = {(ref)=>{
+                        markerRefs.current["Lake Evan"] = ref;
+                   }} 
+                   eventHandlers={{
+                    click: (e) => {
+                      markerClick("Lake Evan");
+                    }
+                }}
+                >
+                    <Popup>
+                    <h2>Lake Evan</h2>
+                        <p>    
+                            testing
+                        </p>
+
+                    </Popup>
+                </Marker>
+
+                <Marker
+                    icon = {lakeIcon}
+                    position = {[55,90]}
+                    ref = {(ref)=>{
+                        markerRefs.current["Lake Evan"] = ref;
+                   }} 
+                   eventHandlers={{
+                    click: (e) => {
+                      markerClick("Lake Evan");
+                    }
+                }}
+                >
+                    <Popup>
+                    <h2>Lake Evan</h2>
+                        <p>    
+                            testing
+                        </p>
+
+                    </Popup>
+                </Marker>
+
+                <Marker
+                    icon = {lakeIcon}
+                    position = {[51,90]}
+                    ref = {(ref)=>{
+                        markerRefs.current["Lake Evan"] = ref;
+                   }} 
+                   eventHandlers={{
+                    click: (e) => {
+                      markerClick("Lake Evan");
+                    }
+                }}
+                >
+                    <Popup>
+                    <h2>Lake Evan</h2>
+                        <p>    
+                            testing
+                        </p>
+
+                    </Popup>
+                </Marker>
+
+                <Marker
+                    icon = {lakeIcon}
+                    position = {[25,90]}
+                    ref = {(ref)=>{
+                        markerRefs.current["Lake Evan"] = ref;
+                   }} 
+                   eventHandlers={{
+                    click: (e) => {
+                      markerClick("Lake Evan");
+                    }
+                }}
+                >
+                    <Popup>
+                    <h2>Lake Evan</h2>
+                        <p>    
+                            testing
+                        </p>
+
+                    </Popup>
+                </Marker>
+
+                <Marker
+                    icon = {lakeIcon}
+                    position = {[20,104]}
+                    ref = {(ref)=>{
+                        markerRefs.current["Lake Evan"] = ref;
+                   }} 
+                   eventHandlers={{
+                    click: (e) => {
+                      markerClick("Lake Evan");
+                    }
+                }}
+                >
+                    <Popup>
+                    <h2>Lake Evan</h2>
+                        <p>    
+                            testing
+                        </p>
+
+                    </Popup>
+                </Marker>
+
+                <Marker
+                    icon = {lakeIcon}
+                    position = {[23,75]}
+                    ref = {(ref)=>{
+                        markerRefs.current["Lake Evan"] = ref;
+                   }} 
+                   eventHandlers={{
+                    click: (e) => {
+                      markerClick("Lake Evan");
+                    }
+                }}
+                >
+                    <Popup>
+                    <h2>Lake Evan</h2>
+                        <p>    
+                            testing
+                        </p>
+
+                    </Popup>
+                </Marker>
+
+                <Marker
+                    icon = {lakeIcon}
+                    position = {[20,65]}
+                    ref = {(ref)=>{
+                        markerRefs.current["Lake Evan"] = ref;
+                   }} 
+                   eventHandlers={{
+                    click: (e) => {
+                      markerClick("Lake Evan");
+                    }
+                }}
+                >
+                    <Popup>
+                    <h2>Lake Evan</h2>
+                        <p>    
+                            testing
+                        </p>
+
+                    </Popup>
+                </Marker>
+
+                <Marker
+                    icon = {lakeIcon}
+                    position = {[5,85]}
+                    ref = {(ref)=>{
+                        markerRefs.current["Lake Evan"] = ref;
+                   }} 
+                   eventHandlers={{
+                    click: (e) => {
+                      markerClick("Lake Evan");
+                    }
+                }}
+                >
+                    <Popup>
+                    <h2>Lake Evan</h2>
+                        <p>    
+                            testing
+                        </p>
+
+                    </Popup>
+                </Marker>
            </MapContainer>
-        </div>     
+        </div>   
+        <div>
+            <div>
+                 <MapButtons activation = {centerHandler} activation2 = {zoomOutHandler} activation3 = {zoomInHandler}></MapButtons>
+            </div>
+            <div>
+                 <Atlas activeMarker = {clickedMarker} ></Atlas>
+            </div>
+        </div>    
+        </div>
     )
 }
 
