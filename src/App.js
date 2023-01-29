@@ -15,14 +15,9 @@ import MapButtons from './components/MapButtons.js';
 //mainDisplay div is flex parent, leftsearch and map children flex items
 
 //all map locations 
-const point_locations = Data;
 
 function App() {
-  //holds titles of buttons clicked (in leftsearch)
 
-  const [clickedMarker, setClickedMarker] = useState();
-  //recieves title of buttons clicked
-  
   return(
     <div>
       <div className = "navbarComponent">

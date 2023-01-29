@@ -1,17 +1,14 @@
 import {MapContainer,TileLayer, Marker, Popup, useMap, LayerGroup, Circle, CircleMarker} from 'react-leaflet'
 import L, { map, marker } from 'leaflet'
 import {useRef, useEffect, useState} from 'react'
-import cavernMarker from '../navImages/cavern.webp'
 import lakeMarker from '../navImages/lakeIcon.webp'
-import forestMarker from '../navImages/forestIcon.webp'
-import mountainMarker from '../navImages/mountainIcon.png'
-
 import LeftSearch from './leftSearch'
 import MapButtons from './MapButtons'
 import Atlas from './Atlas'
 import '../styles/mapdisplay.css'
 import Data from '../devInfo/mapLocations'
 //This component displays the react leaflet map 
+//markers positions -> y,x for correct positions 
 
 function MapDisplay(props){
 
@@ -19,6 +16,32 @@ function MapDisplay(props){
     const layerGroup = useRef();
     const testLayer = useRef();
     const [clickedMarker, setMarker] = useState();
+    const[isLoading, setIsLoading] = useState(false);   //loading state
+    const[loadedMarks, setLoadedMarks] = useState([]);    //loaded marker data
+    const[error,setError] = useState();
+
+    useEffect(()=>{
+        const sendGetLocations = async () =>{
+            setIsLoading(true); //currently loading from db....
+            try{
+                const response = await fetch('http://localhost:5000/api/places/');   //default in a get request*, javascript fetch()
+                const responseData = await response.json();  //convert to json 
+                if(!response.ok){
+                    console.log("error loading map data");
+                }
+                else{
+                    //we got a response...
+                    console.log(responseData);
+                }
+                setLoadedMarks(responseData.mapPlaces);  //set loaded marker data, "mapPlaces array", triggering useState here ->reload page 
+            }catch(err){
+                setError(err.message);   //set the error 
+            }
+            setIsLoading(false);  //finished loading 
+        }
+        sendGetLocations();   //call the function  **
+    },[]);
+
     //the map ref
     const testRef= useRef();
     const center = [0,0];
@@ -36,14 +59,17 @@ function MapDisplay(props){
         iconSize:[26,26]
     });
 
+
     //hook executes after component renders -> function is our "effect"
     useEffect(()=>{
-        console.log(testRef.current);
+        console.log("use effect other called ");
     }, [testRef])
+    
 
      //utilizes react leaflet events 
      const markerClick = (test) =>{
-       setMarker(test);
+       //setMarker(test);
+       console.log(test);
      }
 
     //handles button clicks from leftsearch component (function passed as prop)
@@ -108,264 +134,34 @@ function MapDisplay(props){
                 <TileLayer minZoom={2} maxZoom = {4} noWrap = {true}
                     url={tileUrl}
                 />
-            
+
+                {!isLoading && loadedMarks && 
+
+                loadedMarks.map((location) => (
                 <Marker
-                        id = "Lake Leonard"
+                        id = {location.title}
                         icon = {lakeIcon} 
-                        position={[-28, 80]} 
+                        position={[location.yPoint,location.xPoint]} 
                         ref = {(ref)=>{
-                             markerRefs.current["Lake Leonard"] = ref;
+                             markerRefs.current[location.title] = ref;
                         }} 
                         eventHandlers={{
                             click: (e) => {
-                              markerClick("Lake Leonard");
+                              markerClick(location.title);
                             }
                         }}
-                    >
-                    <Popup>
-                        <h2>Lake Leonard</h2>
-                        <img src = {"https://res.cloudinary.com/dog5jmb4w/image/upload/v1666634868/SDImageFolder/LakeLeonard_milnsc.png"} alt = "Lake Leonard">
-                        </img>
-                        <p>    
-                        Lenny, and Leonard when he does listen was originally 
-                        christened Waffles by the pope or whomever runs that homeless 
-                        shelter for cats they call the Humane Society. Leonard is now in
-                         residence \nnumber three since I got him.  He does not adjust quickly! 
-                        But he is a good boy and I love him as much as I can love a cat.(which is actually quite a bit)
-                        </p>
-                    </Popup>
-                </Marker>
-
-                <Marker
-                    icon = {lakeIcon}
-                    position = {[15,-25]}
-                    ref = {(ref)=>{
-                        markerRefs.current["Lake Evan"] = ref;
-                   }} 
-                   eventHandlers={{
-                    click: (e) => {
-                      markerClick("Lake Evan");
-                    }
-                }}
                 >
-                    <Popup>
-                    <h2>Lake Evan</h2>
-                        <p>    
-                            testing
-                        </p>
-
-                    </Popup>
-                </Marker>
-
-                <Marker
-                    icon = {lakeIcon}
-                    position = {[69,109]}
-                    ref = {(ref)=>{
-                        markerRefs.current["Lake Evan"] = ref;
-                   }} 
-                   eventHandlers={{
-                    click: (e) => {
-                      markerClick("Lake Evan");
-                    }
-                }}
-                >
-                    <Popup>
-                    <h2>Lake Evan</h2>
-                        <p>    
-                            testing
-                        </p>
-
-                    </Popup>
-                </Marker>
-
-                <Marker
-                    icon = {lakeIcon}
-                    position = {[65,110]}
-                    ref = {(ref)=>{
-                        markerRefs.current["Lake Evan"] = ref;
-                   }} 
-                   eventHandlers={{
-                    click: (e) => {
-                      markerClick("Lake Evan");
-                    }
-                }}
-                >
-                    <Popup>
-                    <h2>Lake Evan</h2>
-                        <p>    
-                            testing
-                        </p>
-
-                    </Popup>
-                </Marker>
-
-                <Marker
-                    icon = {lakeIcon}
-                    position = {[60,90]}
-                    ref = {(ref)=>{
-                        markerRefs.current["Lake Evan"] = ref;
-                   }} 
-                   eventHandlers={{
-                    click: (e) => {
-                      markerClick("Lake Evan");
-                    }
-                }}
-                >
-                    <Popup>
-                    <h2>Lake Evan</h2>
-                        <p>    
-                            testing
-                        </p>
-
-                    </Popup>
-                </Marker>
-
-                <Marker
-                    icon = {lakeIcon}
-                    position = {[55,90]}
-                    ref = {(ref)=>{
-                        markerRefs.current["Lake Evan"] = ref;
-                   }} 
-                   eventHandlers={{
-                    click: (e) => {
-                      markerClick("Lake Evan");
-                    }
-                }}
-                >
-                    <Popup>
-                    <h2>Lake Evan</h2>
-                        <p>    
-                            testing
-                        </p>
-
-                    </Popup>
-                </Marker>
-
-                <Marker
-                    icon = {lakeIcon}
-                    position = {[51,90]}
-                    ref = {(ref)=>{
-                        markerRefs.current["Lake Evan"] = ref;
-                   }} 
-                   eventHandlers={{
-                    click: (e) => {
-                      markerClick("Lake Evan");
-                    }
-                }}
-                >
-                    <Popup>
-                    <h2>Lake Evan</h2>
-                        <p>    
-                            testing
-                        </p>
-
-                    </Popup>
-                </Marker>
-
-                <Marker
-                    icon = {lakeIcon}
-                    position = {[25,90]}
-                    ref = {(ref)=>{
-                        markerRefs.current["Lake Evan"] = ref;
-                   }} 
-                   eventHandlers={{
-                    click: (e) => {
-                      markerClick("Lake Evan");
-                    }
-                }}
-                >
-                    <Popup>
-                    <h2>Lake Evan</h2>
-                        <p>    
-                            testing
-                        </p>
-
-                    </Popup>
-                </Marker>
-
-                <Marker
-                    icon = {lakeIcon}
-                    position = {[20,104]}
-                    ref = {(ref)=>{
-                        markerRefs.current["Lake Evan"] = ref;
-                   }} 
-                   eventHandlers={{
-                    click: (e) => {
-                      markerClick("Lake Evan");
-                    }
-                }}
-                >
-                    <Popup>
-                    <h2>Lake Evan</h2>
-                        <p>    
-                            testing
-                        </p>
-
-                    </Popup>
-                </Marker>
-
-                <Marker
-                    icon = {lakeIcon}
-                    position = {[23,75]}
-                    ref = {(ref)=>{
-                        markerRefs.current["Lake Evan"] = ref;
-                   }} 
-                   eventHandlers={{
-                    click: (e) => {
-                      markerClick("Lake Evan");
-                    }
-                }}
-                >
-                    <Popup>
-                    <h2>Lake Evan</h2>
-                        <p>    
-                            testing
-                        </p>
-
-                    </Popup>
-                </Marker>
-
-                <Marker
-                    icon = {lakeIcon}
-                    position = {[20,65]}
-                    ref = {(ref)=>{
-                        markerRefs.current["Lake Evan"] = ref;
-                   }} 
-                   eventHandlers={{
-                    click: (e) => {
-                      markerClick("Lake Evan");
-                    }
-                }}
-                >
-                    <Popup>
-                    <h2>Lake Evan</h2>
-                        <p>    
-                            testing
-                        </p>
-
-                    </Popup>
-                </Marker>
-
-                <Marker
-                    icon = {lakeIcon}
-                    position = {[5,85]}
-                    ref = {(ref)=>{
-                        markerRefs.current["Lake Evan"] = ref;
-                   }} 
-                   eventHandlers={{
-                    click: (e) => {
-                      markerClick("Lake Evan");
-                    }
-                }}
-                >
-                    <Popup>
-                    <h2>Lake Evan</h2>
-                        <p>    
-                            testing
-                        </p>
-
-                    </Popup>
-                </Marker>
+                <Popup>
+                    <div>
+                        <h1>{location.title}</h1>
+                        <img src = {location.img} alt = "point visual"></img>
+                    </div>
+                   {location.description}
+                </Popup>
+                </Marker>   
+                ))
+            }  
+     
            </MapContainer>
         </div>   
         <div>

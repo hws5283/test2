@@ -1,0 +1,27 @@
+.updateDiv{
+    display:flex;
+}
+
+.selectOption{
+    width:200px;
+}
+.descInput{
+    width:200px;
+    height:200px;
+}
+
+.pointOption{
+    padding-right: 50px;
+    background-color: rgb(194, 148, 132)
+}
+
+.description-text-area{
+    padding-right:50px;
+}
+.description-update{
+    background-color: rgb(222, 184, 135); 
+    display:flex
+}
+.updateButton{
+    background-color: rgb(129, 207, 255);
+}
