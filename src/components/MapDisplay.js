@@ -40,7 +40,7 @@ function MapDisplay(props){
             setIsLoading(false);  //finished loading 
         }
         sendGetLocations();   //call the function  **
-    },[]);
+    },[]);   //only called when page renders 
 
     //the map ref
     const testRef= useRef();
@@ -140,6 +140,7 @@ function MapDisplay(props){
                 loadedMarks.map((location) => (
                 <Marker
                         id = {location.title}
+                        key = {location.title}
                         icon = {lakeIcon} 
                         position={[location.yPoint,location.xPoint]} 
                         ref = {(ref)=>{

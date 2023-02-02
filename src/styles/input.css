@@ -1,0 +1,12 @@
+.inputDiv{
+    background-color:  rgb(53, 50, 49);
+    height:800px;
+}
+
+label{
+    color: black;
+    font-size: x-large;
+}
+.selectOption{
+    font-size: x-large;
+}
