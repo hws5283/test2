@@ -28,3 +28,9 @@
     color: rgba(255, 255, 255, 1);
     box-shadow: 0 5px 15px rgb(129, 207, 255);
 }
+
+/*
+a{
+    background-image: linear-gradient(transparent 0%, transparent calc(50% - 9px), rgba(0, 255, 0, 0.35) calc(50% - 9px), rgba(0, 255, 0, 0.35) 100%);
+}
+*/

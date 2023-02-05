@@ -25,17 +25,12 @@ export default function Atlas(props){
         props.circleTest(areaTitle);
     };
 
-    const testing = (test) =>{
-        console.log("logging from atlas component");
-        console.log(test);
-    }
-
     let activeMarker = props.displayMarker;   //the active marker 
 
     return (
             <div className = "buttonDiv">
                 <div className = "header1">
-                    <button className = "headerBtn" onClick = {() =>{testing(props.activeMarker)}}>Great Shadeck Forest</button>
+                    <button className = "headerBtn" onClick = {() => {props.layerController()} }>Great Shadeck Forest</button>
                     {great_shadeck_forest.map((loc) =>(
                     <AtlasMarkerComponent key = {loc.feature} title = {loc.feature} activeTest = {viewMarker}></AtlasMarkerComponent>
                     ))}

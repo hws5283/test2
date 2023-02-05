@@ -53,5 +53,8 @@
     "transformIgnorePatterns": [
       "node_modules/(?!@ngrx|(?!hooks.gl)|ng-dynamic)"
     ]
+  },
+  "devDependencies": {
+    "node-mocks-http": "^1.12.1"
   }
 }

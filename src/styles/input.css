@@ -10,3 +10,6 @@ label{
 .selectOption{
     font-size: x-large;
 }
+.errorMess{
+    color: rgb(241, 88, 74)
+}

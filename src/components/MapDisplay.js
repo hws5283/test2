@@ -1,4 +1,4 @@
-import {MapContainer,TileLayer, Marker, Popup, useMap, LayerGroup, Circle, CircleMarker} from 'react-leaflet'
+import {MapContainer,TileLayer, Marker, Popup, useMap, LayerGroup, Circle, CircleMarker, LayersControl} from 'react-leaflet'
 import L, { map, marker } from 'leaflet'
 import {useRef, useEffect, useState} from 'react'
 import lakeMarker from '../navImages/lakeIcon.webp'
@@ -14,11 +14,16 @@ function MapDisplay(props){
 
     const markerRefs = useRef({});   //give useRef an array 
     const layerGroup = useRef();
-    const testLayer = useRef();
+    const ShadeckForestLayer = useRef();
     const [clickedMarker, setMarker] = useState();
     const[isLoading, setIsLoading] = useState(false);   //loading state
     const[loadedMarks, setLoadedMarks] = useState([]);    //loaded marker data
     const[error,setError] = useState();
+    const[showLayer, truthy] = useState(false);
+
+    //source of map images
+    const tileUrl = '../cuts/{z}/{x}/{y}.png';
+
 
     useEffect(()=>{
         const sendGetLocations = async () =>{
@@ -40,7 +45,7 @@ function MapDisplay(props){
             setIsLoading(false);  //finished loading 
         }
         sendGetLocations();   //call the function  **
-    },[]);   //only called when page renders 
+    },[]);   //only called when page renders -> only called once ????
 
     //the map ref
     const testRef= useRef();
@@ -50,9 +55,6 @@ function MapDisplay(props){
         [100,-185],
         [-100, 185],
     ]
-
-    //source of map images
-    const tileUrl = '../cuts/{z}/{x}/{y}.png';
 
     const lakeIcon = new L.Icon({
         iconUrl:lakeMarker,
@@ -79,7 +81,6 @@ function MapDisplay(props){
         const markerToOpen = markerRefs.current[title]; //the marker ref of specific value of button clicked
         if (markerToOpen){
              markerToOpen.openPopup();           //show the popup display 
-             console.log("its updating");
         }
     }
 
@@ -98,27 +99,32 @@ function MapDisplay(props){
         testRef.current.setZoom(2);
     }
    
-    const testLayerFunction = () =>{
-        layerGroup.current.removeLayer(testLayer.current);
+    //called to open raster cirlce layer for areas of map 
+    const testLayerFunction = (buttonTitle) =>{
+        truthy(true);
     }
     /*
         <Circle center = {[5,-110]} pathOptions = {fillBlueOptions} radius = {2000000}></Circle>
         <Circle center = {[33,60]} pathOptions = {fillBlueOptions} radius = {4000000}></Circle>
         <Circle center = {[50,-80]} pathOptions = {fillBlueOptions} radius = {3000000}></Circle>
+
+
+        
     */
+   
 
     return(
 
-    <div className = "mainDiv">
+    <div className = "mainDiv" data-testid = "mapDisplay-1">
         <div>
-            <LeftSearch locations = {Data} eventFunction = {clickHandler}></LeftSearch>
-            <button onClick = {()=>{testLayerFunction()}}>testing</button>
+            <LeftSearch data-testid = "leftSearch-1" locations = {Data} eventFunction = {clickHandler}></LeftSearch>
         </div>
         <div className = "mapDisplay">    
         {/*responsible for creating map instance and providing to child components, props used as map options  */
         //NOTE - react leaflet is providing mapping to leaflet js with the use of components MUST LOOK AT BOTH DOCUMENTATIONS
         }
-            <MapContainer 
+            <MapContainer
+                data-testid = "container" 
                 ref = {testRef}
                 maxBounds = {bounds}
                 center={[9,-22]} 
@@ -127,11 +133,11 @@ function MapDisplay(props){
                 style = {{height: "800px", width: "800px"}}
                >
 
-                <LayerGroup ref = {layerGroup}>
-                    <Circle ref = {testLayer} center = {[-20,15]} pathOptions ={fillBlueOptions} radius = {4600000}><Popup>Shadeck Forest Description</Popup></Circle>
-                </LayerGroup>
+                {showLayer &&
+                    <Circle ref = {ShadeckForestLayer} center = {[-20,15]} pathOptions ={fillBlueOptions} radius = {4600000}><Popup>Shadeck Forest Description</Popup></Circle>
+                }                   
     
-                <TileLayer minZoom={2} maxZoom = {4} noWrap = {true}
+                <TileLayer data-testid="layerPic" minZoom={2} maxZoom = {4} noWrap = {true}
                     url={tileUrl}
                 />
 
@@ -139,38 +145,43 @@ function MapDisplay(props){
 
                 loadedMarks.map((location) => (
                 <Marker
-                        id = {location.title}
-                        key = {location.title}
-                        icon = {lakeIcon} 
-                        position={[location.yPoint,location.xPoint]} 
-                        ref = {(ref)=>{
-                             markerRefs.current[location.title] = ref;
-                        }} 
-                        eventHandlers={{
-                            click: (e) => {
-                              markerClick(location.title);
-                            }
-                        }}
+                    id = {location.title}
+                    key = {location.title}
+                    icon = {lakeIcon} 
+                    position={[location.yPoint,location.xPoint]} 
+                    ref = {(ref)=>{
+                        markerRefs.current[location.title] = ref;
+                    }} 
+                    eventHandlers={{
+                        click: (e) => {
+                         markerClick(location.title);
+                    }
+                    }}
                 >
                 <Popup>
-                    <div>
-                        <h1>{location.title}</h1>
-                        <img src = {location.img} alt = "point visual"></img>
-                    </div>
-                   {location.description}
+                <div>
+                     <h1>{location.title}</h1>
+                     {
+                        location.img.map((element)=>(
+                            <img src={element} alt= "marker resource"></img>
+                        ))
+                     }
+                     <a href = "https://washington-township.info/history-and-facts">Some other content</a>
+                </div>
+                {location.description}
                 </Popup>
                 </Marker>   
                 ))
-            }  
-     
+                }  
+            
            </MapContainer>
         </div>   
         <div>
-            <div>
+            <div data-testid = "mapButtons-1">
                  <MapButtons activation = {centerHandler} activation2 = {zoomOutHandler} activation3 = {zoomInHandler}></MapButtons>
             </div>
             <div>
-                 <Atlas activeMarker = {clickedMarker} ></Atlas>
+                 <Atlas activeMarker = {clickedMarker} layerController = {testLayerFunction} ></Atlas>
             </div>
         </div>    
         </div>
