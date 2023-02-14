@@ -45,7 +45,7 @@ function MapDisplay(props){
             setIsLoading(false);  //finished loading 
         }
         sendGetLocations();   //call the function  **
-    },[]);   //only called when page renders -> only called once ????
+    },[]);   //only called when page renders, no dependencies to call this again
 
     //the map ref
     const testRef= useRef();
@@ -78,13 +78,14 @@ function MapDisplay(props){
     //ultimately calls in button components reaches here
     //react leaflet automatically pans to these markers on activation 
     const clickHandler = (title) =>{
+        console.log(title);
         const markerToOpen = markerRefs.current[title]; //the marker ref of specific value of button clicked
         if (markerToOpen){
              markerToOpen.openPopup();           //show the popup display 
         }
     }
 
-    //center map
+    //center map, function passed as prop to mapButtons
     const centerHandler = () => {
        testRef.current.flyTo(center, 2, {duration:2}); 
     }
@@ -101,18 +102,14 @@ function MapDisplay(props){
    
     //called to open raster cirlce layer for areas of map 
     const testLayerFunction = (buttonTitle) =>{
-        truthy(true);
+       
     }
     /*
         <Circle center = {[5,-110]} pathOptions = {fillBlueOptions} radius = {2000000}></Circle>
         <Circle center = {[33,60]} pathOptions = {fillBlueOptions} radius = {4000000}></Circle>
         <Circle center = {[50,-80]} pathOptions = {fillBlueOptions} radius = {3000000}></Circle>
-
-
         
     */
-   
-
     return(
 
     <div className = "mainDiv" data-testid = "mapDisplay-1">
@@ -124,17 +121,35 @@ function MapDisplay(props){
         //NOTE - react leaflet is providing mapping to leaflet js with the use of components MUST LOOK AT BOTH DOCUMENTATIONS
         }
             <MapContainer
-                data-testid = "container" 
+                className = "map-container"
                 ref = {testRef}
                 maxBounds = {bounds}
                 center={[9,-22]} 
                 zoom={13} 
                 scrollWheelZoom={true} 
-                style = {{height: "800px", width: "800px"}}
+                style = {{height: "752px", width: "800px"}}
                >
 
                 {showLayer &&
-                    <Circle ref = {ShadeckForestLayer} center = {[-20,15]} pathOptions ={fillBlueOptions} radius = {4600000}><Popup>Shadeck Forest Description</Popup></Circle>
+                    <Circle ref = {ShadeckForestLayer} center = {[-20,15]} pathOptions ={fillBlueOptions} radius = {4600000}>
+                        <Popup>
+                            One of the predominant features on the map is my surname.  
+                            Those closest to me; for the longest periods of time are adjacent
+                            to the Great Shadeck Forest or they are Munsoned in the Middle of Nowhere.
+                            I’m not certain that every geologic feature has relevance.  
+                            But the forest is relevant to me. I love the woods.
+                            Some of my favorite memories as a child were walking with my dad in Scott 
+                            Park or exploring Frontier Park and the Bayfront on my own starting at a very young age.  
+                            I remember on one particular walk as a late adolescent when I was attempting to get out 
+                            of going to church on a regular basis.  I tried to explain to my father that I did not 
+                            feel it was fair that I had to go to Sunday School and Church; but he never went.  
+                            His quick response was “I go to church every time I step into the woods”
+                            Now at the time I think he was just trying to find a handy parental excuse as to why 
+                            I had to do what he said but not what he did.  
+                            In retrospect his smart ass answer has become a personal philosophy for me that has 
+                            greatly impacted my life and is one of the reasons I am generally a happy person.
+                        </Popup>
+                    </Circle>
                 }                   
     
                 <TileLayer data-testid="layerPic" minZoom={2} maxZoom = {4} noWrap = {true}
@@ -158,17 +173,37 @@ function MapDisplay(props){
                     }
                     }}
                 >
-                <Popup>
-                <div>
-                     <h1>{location.title}</h1>
-                     {
+                <Popup maxWidth = {"auto"} maxHeight = {500} minWidth = {500}>
+                    <div className ="content-div">
+                    <div className = "displayImages">
+                     {location.img &&
                         location.img.map((element)=>(
+                            <div className = "image">
                             <img src={element} alt= "marker resource"></img>
+                            </div>
                         ))
                      }
-                     <a href = "https://washington-township.info/history-and-facts">Some other content</a>
-                </div>
-                {location.description}
+                     </div>
+                 
+                    <div>
+                     <h1>{location.title}</h1>
+                    </div>
+                    <div className = "description-body">
+                        <p className = "description-body-p">
+                            {location.description}
+                        </p>
+                    </div>
+                    {location.link &&
+                    <div className = "link-data">
+                        {location.link &&
+                            location.link.map((element)=>(
+                                <a href = {element}>More Information About {location.title} </a>
+                            ))
+                        }
+                    </div>
+                    }
+                    </div>
+                   
                 </Popup>
                 </Marker>   
                 ))

@@ -1,18 +1,24 @@
 .mapControl{
     background-color: rgb(53, 50, 49);
     height:120px;
-    width:355px;
+    width:369px;
     display:flex;
 }
 
-.controlBtn{
-    height: 80px;
-    width: 80px;
-    background-color: rgb(194, 148, 132)
+.centerButton,.zoomOutButton,.zoomInButton{
+    font: inherit;
+        border: 1px solid #45a4f1;
+        border-radius: 4px;
+        background: #8de0f5;
+        color: black;
+        cursor: pointer;
+        text-decoration: none;
+        width: 90px;
+        height: 70px;
 }
-.controlBtn:hover{
+.centerButton:hover,.zoomOutButton:hover,.zoomInButton:hover{
     color: rgba(255, 255, 255, 1);
-    box-shadow: 0 5px 15px rgb(194, 148, 132)
+    box-shadow: 0 5px 15px #a6d1e2;
 }
 .leftBtn{
     padding-left:20px;

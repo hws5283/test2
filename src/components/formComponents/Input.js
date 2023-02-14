@@ -34,10 +34,15 @@ const Input = props =>{
 
 
     return(
-        <div className = {'form-control'}>
-            <label htmlFor= {props.id}>{props.label}</label>
-                <textarea id = {props.id} rows = {10} cols = {50} onChange = {changeHandler} value = {props.value}></textarea>
+        <div className = "textBox">
+            <div>
+                 <label htmlFor= {props.id}>{props.label}</label>
+            </div>
+            <div className = "decriptionInput">
+                <textarea id = {props.id} rows = {10} cols = {50} onChange = {changeHandler} value = {props.value} disabled = {props.disabled}></textarea>
                 {!inputState.isValid && <p className = "errorMess">{props.errorText}</p>}
+            </div>
+                
         </div>
     )
 

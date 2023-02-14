@@ -6,6 +6,10 @@
     display:flex;
 }
 
-textarea::placeholder {
-    color: black
-  }
+.descriptionUpdate{
+    display:flex;
+    background-color: rgb(53, 50, 49);
+}
+.selectComponent{
+    background-color: rgb(53, 50, 49);
+}

@@ -1,3 +1,15 @@
 .mainDiv{
     display:flex;
 }
+.displayImages{
+   
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 10px;
+}
+.description-body{
+    max-width:300px;
+}
+.description-body-p{
+    min-width: 300px;
+}

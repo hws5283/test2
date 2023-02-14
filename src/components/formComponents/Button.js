@@ -7,7 +7,7 @@ const Button = (props) =>{
     return(
         <button className = "formSubmit" type = {props.type} onClick = {props.onClick}
         disabled = {props.disabled}>
-        Update Marker
+         {props.text}
         </button>
     )
 }

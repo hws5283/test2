@@ -17,13 +17,13 @@ function MapButtons (props){
     return(
         <div className = "mapControl"> 
             <div className = "leftBtn">
-                <button className ='controlBtn' onClick = {()=>{centerMap()}}>Center Map</button>
+                <button className ='centerButton' onClick = {()=>{centerMap()}}>Center Map</button>
             </div>
             <div className = "leftBtn">
-                <button className ='controlBtn' onClick = {()=>{zoomOut()}}>Zoom Out</button>
+                <button className ='zoomOutButton' onClick = {()=>{zoomOut()}}>Zoom Out</button>
             </div>
             <div className = "leftBtn">
-                <button className ='controlBtn' onClick = {()=>{zoomIn()}}>Zoom In</button>
+                <button className ='zoomInButton' onClick = {()=>{zoomIn()}}>Zoom In</button>
             </div>
         </div>
     )

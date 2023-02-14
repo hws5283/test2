@@ -6,3 +6,5 @@ export const About = () =>{
         <AboutComp1></AboutComp1>
     )
 }
+
+export default About;
