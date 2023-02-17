@@ -1,5 +1,7 @@
 .updateDiv{
    display:block;
+   background-color: rgb(53, 50, 49);
+   height: 100%;
 }
 
 .flex-row{

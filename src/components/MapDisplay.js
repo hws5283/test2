@@ -152,7 +152,7 @@ function MapDisplay(props){
                     </Circle>
                 }                   
     
-                <TileLayer data-testid="layerPic" minZoom={2} maxZoom = {4} noWrap = {true}
+                <TileLayer minZoom={2} maxZoom = {4} noWrap = {true}
                     url={tileUrl}
                 />
 

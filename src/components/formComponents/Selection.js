@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { propTypes } from 'react-bootstrap/esm/Image'
 import Data from '../../devInfo/mapLocations'
 
