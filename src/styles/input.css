@@ -1,20 +1,20 @@
-.inputDiv{
-    background-color:  rgb(53, 50, 49);
+.inputDiv {
+    background-color: #161922;
     height:800px;
 }
 
-label{
+label {
     color: whitesmoke;
     font-size: x-large;
 }
-.selectOption{
+.selectOption {
     font-size: x-large;
 }
-.errorMess{
-    color: rgb(241, 88, 74)
+.errorMess {
+    color: orangered;
 }
-.textBox{
-    background-color: rgb(53, 50, 49);
+.textBox {
+    background-color: #161922;
     padding-right: 50px;
     padding-left: 50px;
 }

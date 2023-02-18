@@ -1,46 +1,27 @@
-import Carousel from 'react-bootstrap/Carousel';
+import profile from "../navImages/lee-shadeck.jpg"
+import "../styles/AboutComp1.css"
+import {Link} from "react-router-dom";
 
 function AboutComp1() {
   return (
-    <Carousel>
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=First slide&bg=373940"
-          alt="First slide"
-        />
-        <Carousel.Caption>
-          <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=Second slide&bg=282c34"
-          alt="Second slide"
-        />
-
-        <Carousel.Caption>
-          <h3>Second slide label</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=Third slide&bg=20232a"
-          alt="Third slide"
-        />
-
-        <Carousel.Caption>
-          <h3>Third slide label</h3>
-          <p>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-          </p>
-        </Carousel.Caption>
-      </Carousel.Item>
-    </Carousel>
+    <body>
+      <section className="about">
+        <div className="content">
+            <img src={profile}/>
+            <div className="text">
+                <h1>About <span>Lee's Map</span></h1>
+                <h5>Interactive Map</h5>
+                <p>Welcome to Lee Shadeck's interactive map! We believe that everyone has a story to tell, and we want to help you explore those stories. This website provides an interactive map experience that allows users to explore the history of Lee Shadeck's friends and family through different landmarks. With this, you are able to explore the relationships, places, and events that make up Lee Shadeck's life through various pop-ups. We invite you to explore the map and learn about the people and places that make up this incredible story.</p>
+                <Link to="https://www.airbnb.com/rooms/565043333963667558?guests=1&adults=1&s=67&unique_share_id=08556878-92d6-4818-bc98-d853303b1eb7&source_impression_id=p3_1676477888_COX3kcVRMcsRmjs8" target="_blank">
+                    <button type="button" className="aboutBtn">Airbnb Page</button>
+                </Link>
+                <Link to="https://sites.google.com/view/l-lucian-art/about-the-artist" target="_blank">
+                    <button type="button" className="aboutBtn">More About Lee</button>
+                </Link>
+            </div>
+        </div>
+      </section>
+    </body>
   );
 }
 

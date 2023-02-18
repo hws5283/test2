@@ -30,7 +30,7 @@ function App() {
         <Route path = "/update" exact = {true} element = 
          {<Update></Update>}>
        </Route>
-        <Route path = "/about" exact = {true} element = 
+        <Route path = "/about" exact = {true} element =
           {<About></About>}>
         </Route>
       </Routes>
