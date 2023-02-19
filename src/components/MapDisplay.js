@@ -20,6 +20,11 @@ function MapDisplay(props){
     const[loadedMarks, setLoadedMarks] = useState([]);    //loaded marker data
     const[error,setError] = useState();
     const[showLayer, truthy] = useState(false);
+    const[mapHeight, setMapHeight] = useState(window.innerHeight - 48);
+    const [isMinimized, setIsMinimized] = useState(true);
+    const[mapWidth, setMapWidth] = useState(window.innerWidth < 1200 ? 
+        (isMinimized ? window.innerWidth - 40 : window.innerWidth - 320) : 
+        window.innerWidth - 689);
 
     //source of map images
     const tileUrl = '../cuts/{z}/{x}/{y}.png';
@@ -51,10 +56,10 @@ function MapDisplay(props){
     const testRef= useRef();
     const center = [0,0];
     const fillBlueOptions = { Color: 'blue'};
-    const bounds = [
-        [100,-185],
-        [-100, 185],
-    ]
+    const southWest = L.latLng(-200, -180);
+    const northEast = L.latLng(200, 180);
+    const bounds = L.latLngBounds(southWest, northEast);
+
 
     const lakeIcon = new L.Icon({
         iconUrl:lakeMarker,
@@ -85,9 +90,26 @@ function MapDisplay(props){
         }
     }
 
+    //Updates the size of the map when the window is resized
+    const widthThreshold = 1200;
+    useEffect(() => {
+        const handleResize = () => {
+            const newWidth = 
+                window.innerWidth < widthThreshold ? 
+                (isMinimized ? window.innerWidth - 40 : window.innerWidth - 320) : 
+                window.innerWidth - 689;
+            setMapHeight(window.innerHeight - 48);
+            setMapWidth(newWidth);
+            window.location.reload();
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [isMinimized]);
+    
+
     //center map, function passed as prop to mapButtons
     const centerHandler = () => {
-       testRef.current.flyTo(center, 2, {duration:2}); 
+       testRef.current.flyTo(center, 2.5, {duration:1}); 
     }
 
     //zoom to max zoom level
@@ -112,9 +134,14 @@ function MapDisplay(props){
     */
     return(
 
-    <div className = "mainDiv" data-testid = "mapDisplay-1">
+    <div className = "mainDiv" data-testid = "mapDisplay-1" style={{ height:mapHeight }}>
         <div>
-            <LeftSearch data-testid = "leftSearch-1" locations = {Data} eventFunction = {clickHandler}></LeftSearch>
+            <LeftSearch 
+                data-testid = "leftSearch-1" 
+                locations = {Data} eventFunction = {clickHandler} 
+                isMinimized={isMinimized} 
+                setIsMinimized={setIsMinimized}
+            ></LeftSearch>
         </div>
         <div className = "mapDisplay">    
         {/*responsible for creating map instance and providing to child components, props used as map options  */
@@ -124,10 +151,10 @@ function MapDisplay(props){
                 className = "map-container"
                 ref = {testRef}
                 maxBounds = {bounds}
-                center={[9,-22]} 
-                zoom={13} 
+                center={[0,0]} 
+                zoom={3} 
                 scrollWheelZoom={true} 
-                style = {{height: "752px", width: "800px"}}
+                style = {{height: mapHeight, width: mapWidth}}
                >
 
                 {showLayer &&
@@ -210,7 +237,8 @@ function MapDisplay(props){
                 }  
             
            </MapContainer>
-        </div>   
+        </div> 
+        { (window.innerWidth > widthThreshold) &&  
         <div>
             <div data-testid = "mapButtons-1">
                  <MapButtons activation = {centerHandler} activation2 = {zoomOutHandler} activation3 = {zoomInHandler}></MapButtons>
@@ -218,7 +246,8 @@ function MapDisplay(props){
             <div>
                  <Atlas activeMarker = {clickedMarker} layerController = {testLayerFunction} ></Atlas>
             </div>
-        </div>    
+        </div> 
+        }   
         </div>
     )
 }

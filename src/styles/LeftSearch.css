@@ -1,16 +1,22 @@
 
+.leftSearch{
+    display: flex;
+    flex-direction: column;
+}
+
 .test3{
     background-color: rgb(53, 50, 49);
-    width:320px; 
-    overflow-y: scroll;
-    height: 752px;
-    
+}
+
+.test4{
+    background-color: rgb(53, 50, 49);
+    color: white;
 }
 
 .leftbuttonDiv{
     padding-left: 40px;
     padding-bottom: 10px;
-   
+    overflow-y: scroll;   
 }
 
 
