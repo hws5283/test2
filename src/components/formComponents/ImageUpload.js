@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react'
 import Button from './FormButton'
-
+import '../../styles/imageupload.css'
 const ImageUpload = props =>{
 
     const[file,setFile] = useState();    //file under state
@@ -36,7 +36,7 @@ const ImageUpload = props =>{
     }
   
     return(
-        <div className = "form-control">
+        <div className = "formImage">
             <input 
                 ref = {filePickerRef}
                 id = {props.id} 
@@ -47,12 +47,10 @@ const ImageUpload = props =>{
             />
 
             <div className = "image-upload">
-                <div className = "image-upload-previed">
-                    {previewUrl &&
-                    <img src = {previewUrl} alt = "preview"></img>
-                    }
+                <div className = "image-upload-preview">
+                    {previewUrl &&<img src = {previewUrl} alt = "preview"></img>}
                     {!previewUrl && <p>Please pick an image</p>}
-                    </div>
+                </div>
 
                 <Button type = "button" onClick = {pickImageHandler} text = "Upload Image"></Button>
 

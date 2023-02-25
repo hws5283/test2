@@ -19,14 +19,18 @@
     color: #292929;
     text-decoration: none;
     padding: 0.5rem;
+    font-weight: bold;
+    border-radius: 20px;
   }
   
   .nav-links a:hover,
   .nav-links a:active,
   .nav-links a.active {
-    background: rgb(215, 150, 130);
+    background: darkorange;
     border-color: #292929;
+    border-radius: 20px;
     color: #292929;
+    font-weight: bold;
   }
   
   .nav-links button {
@@ -68,10 +72,6 @@
       background: transparent;
     }
     
-    .nav-links button:hover,
-    .nav-links button:active {
-      background: #f8df00;
-      color: #292929;
-    }
+    
   }
   

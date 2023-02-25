@@ -48,6 +48,7 @@ export default function Update(){
        
         try{
         const fd = new FormData();
+        fd.append('description', loadedPlace);
         fd.append('image', file);
 
         const requestOptions = {
@@ -84,10 +85,11 @@ export default function Update(){
             </div>
            
             </div>
-            <div className = "uploadComponent">
-                <ImageUpload imageMove = {setFile}></ImageUpload>
+            
+            <div>
+            <ImageUpload imageMove = {setFile}></ImageUpload>
             </div>
-
+           
             <div className = "submit-Btn">
                 <Button disabled = {false} type = "submit" text = "Update Marker"></Button>
             </div>

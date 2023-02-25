@@ -15,7 +15,7 @@ const NavLinks = props =>{
             <NavLink to = "/update">Update</NavLink>
         </li>
         <li>
-            <NavLink to = "/auth">About</NavLink>
+            <NavLink to = "/about">About</NavLink>
         </li>
     </ul>
     )

@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { propTypes } from 'react-bootstrap/esm/Image'
-import Data from '../../devInfo/mapLocations'
+import Data from '../../devInfo/updateLocations.json'
+import '../../styles/selection.css'
 
 export default function Selection(props){
 
@@ -9,7 +10,7 @@ export default function Selection(props){
     }
 
     return(
-        <div >
+        <div className = "dropDown" >
                 <select className = "selectOption" onChange={changePointSelection}>
                     {
                         Data.map((optionItem)=>(

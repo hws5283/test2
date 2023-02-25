@@ -19,7 +19,8 @@ function MapDisplay(props){
     const[isLoading, setIsLoading] = useState(false);   //loading state
     const[loadedMarks, setLoadedMarks] = useState([]);    //loaded marker data
     const[error,setError] = useState();
-    const[showLayer, truthy] = useState(false);
+    const[showLayerGSF, showGSF] = useState(false);
+    const[showLayerLake, showLLk] = useState(false);
 
     //source of map images
     const tileUrl = '../cuts/{z}/{x}/{y}.png';
@@ -102,7 +103,20 @@ function MapDisplay(props){
    
     //called to open raster cirlce layer for areas of map 
     const testLayerFunction = (buttonTitle) =>{
-       
+        if(buttonTitle === "Great Shadeck Forest"){
+            if(!showLayerGSF)
+                showGSF(true);
+            else
+                showGSF(false);
+        }
+        if(buttonTitle === "LLucian Lake"){
+            if(!showLayerLake)
+                showLLk(true);
+            else
+                showLLk(false);
+            
+        }
+    
     }
     /*
         <Circle center = {[5,-110]} pathOptions = {fillBlueOptions} radius = {2000000}></Circle>
@@ -111,11 +125,18 @@ function MapDisplay(props){
         
     */
     return(
-
+        
     <div className = "mainDiv" data-testid = "mapDisplay-1">
-        <div>
+       
+        <section className = "MapDisplayBody">
+        <div className = "mapDisplaySearch">
             <LeftSearch data-testid = "leftSearch-1" locations = {Data} eventFunction = {clickHandler}></LeftSearch>
         </div>
+        </section>
+   
+
+      
+        <section className="MapDisplayBody">
         <div className = "mapDisplay">    
         {/*responsible for creating map instance and providing to child components, props used as map options  */
         //NOTE - react leaflet is providing mapping to leaflet js with the use of components MUST LOOK AT BOTH DOCUMENTATIONS
@@ -130,8 +151,8 @@ function MapDisplay(props){
                 style = {{height: "752px", width: "800px"}}
                >
 
-                {showLayer &&
-                    <Circle ref = {ShadeckForestLayer} center = {[-20,15]} pathOptions ={fillBlueOptions} radius = {4600000}>
+                {showLayerGSF &&
+                    <Circle center = {[-20,15]} pathOptions ={fillBlueOptions} radius = {4600000}>
                         <Popup>
                             One of the predominant features on the map is my surname.  
                             Those closest to me; for the longest periods of time are adjacent
@@ -150,7 +171,22 @@ function MapDisplay(props){
                             greatly impacted my life and is one of the reasons I am generally a happy person.
                         </Popup>
                     </Circle>
-                }                   
+                }
+                {showLayerLake &&
+                    <Circle center = {[-40,43]} pathOptions ={fillBlueOptions} radius = {1600000}>
+                    <Popup>
+                    named for myself. Most of the world calls me Lee. My best friends call me Cabbage. But a few people 
+                    call me Lucian and I think I’ve always identified with my middle name as much as my first.  
+                    I look like a Lee- I feel like a Lucian.  My brother Dan was the first person to start 
+                    calling me Lucian- which I appreciate.  Heidi and occasionally my kids will call me Lucian.  
+                    I am pretty sure the voice i talk to myself in - is Lucian. It’s illerative and if you say it right 
+                    it sounds like Alutian - which I think is funny.Lucian is my godfather and my dad just liked the name Lee.  
+                    One time my dad said at a family dinner - ‘We were briefly thinking of naming you Lucian Lee- but that’s too Chinese”.  
+                    That was 15+ years ago and it’s still mentioned a few times a year.  
+
+                    </Popup>
+                </Circle>
+                }             
     
                 <TileLayer minZoom={2} maxZoom = {4} noWrap = {true}
                     url={tileUrl}
@@ -211,6 +247,11 @@ function MapDisplay(props){
             
            </MapContainer>
         </div>   
+        </section>
+      
+
+     
+        <section className="MapDisplayBody">
         <div>
             <div data-testid = "mapButtons-1">
                  <MapButtons activation = {centerHandler} activation2 = {zoomOutHandler} activation3 = {zoomInHandler}></MapButtons>
@@ -218,7 +259,9 @@ function MapDisplay(props){
             <div>
                  <Atlas activeMarker = {clickedMarker} layerController = {testLayerFunction} ></Atlas>
             </div>
-        </div>    
+        </div>   
+        </section>
+     
         </div>
     )
 }

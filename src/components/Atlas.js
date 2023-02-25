@@ -20,7 +20,7 @@ export default function Atlas(props){
                 </div>
 
                 <div className = "header2">
-                    <button className = "headerBtn">LLucian Lake</button>
+                    <button className = "headerBtn" onClick={() =>{props.layerController("LLucian Lake")}}>LLucian Lake</button>
                     {llucianLake.map((loc) =>(
                     <AtlasMarkerComponent key = {loc.feature} title = {loc.feature}></AtlasMarkerComponent>
                     ))}

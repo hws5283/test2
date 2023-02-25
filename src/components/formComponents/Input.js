@@ -16,11 +16,11 @@ const Input = props =>{
 
     return(
         <div className = "textBox">
-            <div>
-                 <label htmlFor= {props.id}>{props.label}</label>
+            <div className = "textBoxLabel">
+                 <label className = "LabelArea" htmlFor= {props.id}>{props.label}</label>
             </div>
             <div className = "decriptionInput">
-                <textarea id = {props.id} rows = {10} cols = {50} onChange = {changeHandler} value = {props.initialValue} disabled = {props.disabled}></textarea>
+                <textarea className = "descriptionArea" id = {props.id} rows = {10} cols = {50} onChange = {changeHandler} value = {props.initialValue} disabled = {props.disabled}></textarea>
                 
             </div>
                 

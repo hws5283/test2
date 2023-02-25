@@ -1,17 +1,34 @@
 .updateDiv{
    display:block;
-   background-color: rgb(53, 50, 49);
-   height: 100%;
+   background-color: #161922;
+   height: 800px;
+   padding-top: 50px;
 }
 
 .flex-row{
     display:flex;
 }
+.box1{
+    position: relative;
+    max-width: 100%;
+}
 
 .descriptionUpdate{
     display:flex;
-    background-color: rgb(53, 50, 49);
+    background-color: #161922;
 }
 .selectComponent{
-    background-color: rgb(53, 50, 49);
+    background-color: #161922;
+    position:relative;
+}
+.updateForm{
+  position: relative;
+  list-style: none;
+  margin: 0 auto;
+  padding: 1rem;
+  width: 90%;
+  max-width: 40rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 6px;
+  background: #ffcc74;
 }

@@ -1,8 +1,3 @@
-.inputDiv{
-    background-color:  rgb(53, 50, 49);
-    height:800px;
-}
-
 label{
     color: whitesmoke;
     font-size: x-large;
@@ -13,8 +8,14 @@ label{
 .errorMess{
     color: rgb(241, 88, 74)
 }
-.textBox{
-    background-color: rgb(53, 50, 49);
-    
-
+.textBoxLabel{
+    background-color: #161922;
+}
+.descriptionArea{
+    margin: 0 auto;
+    width: 90%;
+}
+.labelArea{
+    margin: 0 auto;
+    width: 90%;
 }

@@ -6,9 +6,9 @@ import
 
 //PAGE components for nav
 import MapDisplay from './components/MapDisplay.js';
-import SignIn from './components/SignIn.js';
 import Update from './components/Update.js';
-import About from './components/About';
+import About from './components/AboutComp1';
+import Auth from './components/login/Auth'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import MainNavigation from './components/navigation/MainNavigation';
@@ -25,7 +25,7 @@ function App() {
           {<MapDisplay></MapDisplay>}>
         </Route>
         <Route path = "/login" exact = {true} element =
-          {<SignIn></SignIn>}>
+          {<Auth></Auth>}>
         </Route>
         <Route path = "/update" exact = {true} element = 
          {<Update></Update>}>

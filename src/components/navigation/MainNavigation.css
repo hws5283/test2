@@ -9,6 +9,12 @@
     margin-right: 2rem;
     cursor: pointer;
   }
+  .headerTitle{
+    display:flex;
+  }
+  .navImage{
+    padding-right: 5px;
+  }
   
   .main-navigation__menu-btn span {
     display: block;

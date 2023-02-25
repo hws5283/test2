@@ -1,5 +1,18 @@
+body{
+  
+}
+.MapDisplayBody{
+    width: 100%;
+    height: 100vh;
+    background-color: #161922;
+    z-index: 0;
+}
+
 .mainDiv{
     display:flex;
+    height:100%;
+    background-color:  #161922;
+    padding-top:1rem;
 }
 .displayImages{
    
@@ -13,3 +26,4 @@
 .description-body-p{
     min-width: 300px;
 }
+
