@@ -6,10 +6,27 @@
   .authentication {
     width: 90%;
     max-width: 25rem;
-    margin: 7rem auto;
+    margin: auto;
     text-align: center;
   }
   
   .authentication form {
     margin-bottom: 1rem;
+  }
+  .loginSection{
+    width: 100%;
+    height: 100vh;
+    background-color: #161922;
+    padding-top: 50px;
+  }
+  .loginSubmit{
+    padding: 0.5rem 1.5rem;
+    border: 1px solid #ff0055;
+    border-radius: 4px;
+    background: #ff0055;
+    color: white;
+    cursor: pointer;
+    margin-right: 1rem;
+    text-decoration: none;
+    display: inline-block;
   }

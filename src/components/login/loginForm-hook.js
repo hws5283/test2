@@ -29,6 +29,8 @@ const formReducer = (state,action) => {
 };
 
 //initially given form object and validity value 
+//initialInputs - initial values of the form
+//initialFormValidity - initial validity of the form (initially false)
 export const useLogin = (initialInputs, initialFormValidity) =>{
 
     const [formState, dispatch] = useReducer(formReducer,{    //passed back to Auth (1)

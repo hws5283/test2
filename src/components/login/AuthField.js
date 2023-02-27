@@ -10,6 +10,7 @@ import {validate} from '../../utils/validators'
 
 
 //NOTE: inputReducer outside of component (not dependent on any inputs)
+//reducer function - performs state updates 
 const inputReducer = (state, action)=>{
     switch(action.type){
         case 'CHANGE':
@@ -30,19 +31,23 @@ const inputReducer = (state, action)=>{
 };
 
 const AuthField = props =>{
-  const [inputState, dispatch] = useReducer(inputReducer, {      //give 1. reducer, 2. initial arguments
-     value: props.initialValue || "",
-     isTouched: false,
-     isValid: props.initialValid||false
+
+  //inputState - state of the input
+  //dispatch - dispatch method 
+  const [inputState, dispatch] = useReducer(inputReducer, {      //give 1. reducer, 2. initial arguments  (state)
+     value: props.initialValue || "",            //either an initial prop value or an empty string
+     isTouched: false,                            //initially false
+     isValid: props.initialValid||false           //validity, defaults to false
     });
 
     const {id, onInput} = props;   //on change use useeffect to call function in Auth and reload
-    const {value, isValid} = inputState;
+    const {value, isValid} = inputState;  //holds value and is valid of inputState
 
+    //-----------------------------------------------------------------------
     useEffect(()=>{
-      onInput(id,value,isValid);
-    }, [id,value,isValid, onInput]);
-
+      onInput(id,value,isValid);       //sends values to the inputHandler in login form hook 
+    }, [id,value,isValid, onInput]);   //when id, value, isValid, or onInput changes call useEffect
+    //-----------------------------------------------------------------------
 
     const touchHandler = () =>{
       dispatch({
@@ -53,9 +58,9 @@ const AuthField = props =>{
   //trigger when user enters something(called for every keystroke)
   //when this is called want to 1. store value 2. validate it -> (2 states, useReducer!)
   const changeHandler = event=>{
-    dispatch({                //information here passed to reducer function 
+    dispatch({                //information here passed to reducer function (action)
       type:'CHANGE', 
-      val: event.target.value, 
+      val: event.target.value,      //capturing value change here 
       validators: props.validators
     });
   };
