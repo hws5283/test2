@@ -15,7 +15,7 @@ function MapDisplay(props){
     const markerRefs = useRef({});   //give useRef an array 
     const layerGroup = useRef();
     const ShadeckForestLayer = useRef();
-    const [clickedMarker, setMarker] = useState();
+    const [clickedMarker, setMarker] = useState(null);     //the current marker the user clicked***
     const[isLoading, setIsLoading] = useState(false);   //loading state
     const[loadedMarks, setLoadedMarks] = useState([]);    //loaded marker data
     const[error,setError] = useState();
@@ -25,7 +25,7 @@ function MapDisplay(props){
     //source of map images
     const tileUrl = '../cuts/{z}/{x}/{y}.png';
 
-
+    //this effect is responsible for using the api and getting only the coordinates and name of all markers from controller
     useEffect(()=>{
         const sendGetLocations = async () =>{
             setIsLoading(true); //currently loading from db....
@@ -47,6 +47,24 @@ function MapDisplay(props){
         }
         sendGetLocations();   //call the function  **
     },[]);   //only called when page renders, no dependencies to call this again
+//-----------------------------------------------------------------------------------------------------------------------------------------
+    //utilizes react leaflet events -> function executes when marker is clicked, given name of marker 
+    const markerClick = async(markerName) =>{
+        try{
+            const response = await fetch(`http://localhost:5000/api/places/byname/${markerName}`);   //default in a get request*, javascript fetch()
+            const responseData = await response.json();  //convert to json 
+            if(!response.ok){
+                console.log("error loading the rest of the map data");
+            }
+            else{
+                //we got a response...
+                console.log(responseData);
+            }
+            setMarker(responseData.placebyName);  //set object 
+        }catch(err){
+            setError(err.message);   //set the error 
+        }
+     }
 
     //the map ref
     const testRef= useRef();
@@ -61,19 +79,6 @@ function MapDisplay(props){
         iconUrl:lakeMarker,
         iconSize:[26,26]
     });
-
-
-    //hook executes after component renders -> function is our "effect"
-    useEffect(()=>{
-        console.log("use effect other called ");
-    }, [testRef])
-    
-
-     //utilizes react leaflet events 
-     const markerClick = (test) =>{
-       //setMarker(test);
-       console.log(test);
-     }
 
     //handles button clicks from leftsearch component (function passed as prop)
     //ultimately calls in button components reaches here
@@ -205,15 +210,17 @@ function MapDisplay(props){
                     }} 
                     eventHandlers={{
                         click: (e) => {
-                         markerClick(location.title);
+                         markerClick(location.title); //on click we get the rest of the markers data to display 
                     }
                     }}
                 >
                 <Popup maxWidth = {"auto"} maxHeight = {500} minWidth = {500}>
+                    {clickedMarker && location.title === clickedMarker.title &&
+                    
                     <div className ="content-div">
                     <div className = "displayImages">
-                     {location.img &&
-                        location.img.map((element)=>(
+                     {clickedMarker.img &&
+                        clickedMarker.img.map((element)=>(
                             <div className = "image">
                             <img src={element} alt= "marker resource"></img>
                             </div>
@@ -226,20 +233,20 @@ function MapDisplay(props){
                     </div>
                     <div className = "description-body">
                         <p className = "description-body-p">
-                            {location.description}
+                            {clickedMarker.description}
                         </p>
                     </div>
-                    {location.link &&
+                    {clickedMarker.link &&
                     <div className = "link-data">
-                        {location.link &&
-                            location.link.map((element)=>(
+                        {clickedMarker.link &&
+                            clickedMarker.link.map((element)=>(
                                 <a href = {element}>More Information About {location.title} </a>
                             ))
                         }
                     </div>
                     }
-                    </div>
-                   
+                    </div>                    
+                    }
                 </Popup>
                 </Marker>   
                 ))
@@ -249,8 +256,6 @@ function MapDisplay(props){
         </div>   
         </section>
       
-
-     
         <section className="MapDisplayBody">
         <div>
             <div data-testid = "mapButtons-1">
