@@ -1,48 +1,61 @@
 import React, {useState, useContext }from 'react';
 import AuthField from './AuthField';
 import {VALIDATOR_REQUIRE} from '../../utils/validators'
-import FormButton from '../formComponents/FormButton'
 import {useLogin} from './loginForm-hook'
 import Card from '../general/Card'
 import './Auth.css'
 import { AuthContext } from '../general/context/auth-context';
+import LoadingSpinner from '../general/LoadingSpinner'
+import Button from '../formComponents/FormButton'
 
 //end goal, want the form to have its own validation, sum up all validation
 //of form inputs and decide of a valid form or not 
-//DEFAULT TESTING INFO, will change before deployment
-//---------------------
-//username: Lee442
-//password: Alter908?
-//----------------------
 //reducer logic ensures form validity and value is updated
-
 //component updates with hook updates
 const Auth = ()=>{
-
     //returns context value for calling component 
     const auth = useContext(AuthContext);
-
+    const[isLoading,setIsLoading] = useState(false);
     //initialize usereducer in hook, using custom hook here
     //this is the only place weve used this custom hook ****
     const [formState,inputHandler] = useLogin(
         {
-        username: {                 //initial inputs 
-            value: '',
+        username: {              
+            value: '',              //given to login route
             isValid: false
         },
         password: {
-            value: '',
+            value: '',              //given to login route
             isValid: false
         }
         },
         false  //initial form validity
     );
 
-    const authSubmitHandler = event =>{
+    //logic after form submition
+    const authSubmitHandler = async (event) =>{
         event.preventDefault();  //prevent browser reload/refresh
-        console.log('testing');
-        console.log(formState.inputs);
-        auth.login();  //update context and data managed by context object 
+        setIsLoading(true); //controls loading spinner overlay
+        try{
+            const response = await fetch('http://localhost:5000/api/users/login',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: formState.inputs.username.value,
+                    password: formState.inputs.password.value
+                })
+            });
+            const responseData = await response.json();  //response includes our token
+            if(!response.ok){                           
+                throw new Error(responseData.message);
+            }
+            auth.login(responseData.userId, responseData.token);  //send userId and token to context 
+        }catch(err){
+            console.log('Something went wrong, please try again');
+        }
+        setIsLoading(false);//we are done logging in
     }
 
     return(
@@ -50,6 +63,7 @@ const Auth = ()=>{
         <section className = "loginSection">
         <div>
         <Card className = "authentication">
+        {isLoading && <LoadingSpinner asOverlay/>}
         <form className="place-form" onSubmit={authSubmitHandler}>
         <h2>Login Form</h2>
         <hr></hr>
@@ -73,7 +87,7 @@ const Auth = ()=>{
             onInput = {inputHandler}
             >
             </AuthField>
-            <button className = "loginSubmit" type = "submit" disabled = {!formState.isValid}>Login</button>
+            <Button type = "submit" disabled = {!formState.isValid} text = "Login"/>
         </form>
         </Card>
         </div>

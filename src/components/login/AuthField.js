@@ -55,6 +55,7 @@ const AuthField = props =>{
       });
     }
 
+  //NOTE - dispatch is not an update function it just dispatching an action - (object with a type)
   //trigger when user enters something(called for every keystroke)
   //when this is called want to 1. store value 2. validate it -> (2 states, useReducer!)
   const changeHandler = event=>{
@@ -64,19 +65,33 @@ const AuthField = props =>{
       validators: props.validators
     });
   };
+
+  const element = 
+    props.element === 'input' ?(
+      <input
+        id={props.id}
+        type={props.type}
+        placeholder={props.placeholder}
+        onChange={changeHandler}
+        onBlur={touchHandler}
+        value={inputState.value}
+      />
+    ) : (
+      <textarea
+        id={props.id}
+        rows={props.rows || 5}  //10
+        cols = {props.cols || 10} //50
+        onChange={changeHandler}
+        onBlur={touchHandler}
+        value={inputState.value}
+      />
+    );
   return (
     <div className={`form-control ${!inputState.isValid && inputState.isTouched &&
         'form-control--invalid'}`}>
       <label htmlFor={props.id} className = "loginLabel">{props.label}</label>
-      <input 
-        id={props.id} 
-        type={props.type} 
-        placeholder={props.placeholder} 
-        onChange = {changeHandler} //bind to onChange
-        onBlur = {touchHandler}
-        value = {inputState.value}  //two way binding
-        />
-        {!inputState.isValid && inputState.isTouched &&<p>{props.errorText}</p>}
+      {element}
+      {!inputState.isValid && inputState.isTouched &&<p>{props.errorText}</p>}
     </div>
   );
 };

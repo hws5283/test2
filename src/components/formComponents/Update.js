@@ -1,19 +1,21 @@
-import React, { useEffect } from 'react'
-import '../styles/update.css'
+import React, { useEffect, useContext } from 'react'
+import './update.css'
 import {useState} from 'react'
-import { useParams } from 'react-router-dom';
-import Input from './formComponents/Input';
-import Button from './formComponents/FormButton'
-import Selection from './formComponents/Selection'
-import { VALIDATOR_MINLENGTH } from '../utils/validators'
-import ImageUpload from './formComponents/ImageUpload'
+import Input from './Input';
+import Button from './FormButton'
+import Selection from './Selection'
+import { VALIDATOR_MINLENGTH } from '../../utils/validators'
+import ImageUpload from './ImageUpload'
+import { AuthContext } from '../general/context/auth-context';
+import LoadingSpinner from '../general/LoadingSpinner';
 //THIS PAGE DEALS WITH UPDATING MAP COMPONENTS IT GENERATES A TEXTBOX AND IMAGE UPLOAD BUTTON WITH A SUBMIT FOR BUTTON
 export default function Update(){
 
     const [placeName,setPlaceName] = useState("Lake Leonard");  
     const [loadedPlace, setLoadedPlace] = useState("");              //default value of textBox
-    const [descriptionInput,setDescriptionInput] = useState("");    
-    const[file,setFile] = useState(null); 
+    const[file,setFile] = useState([]); 
+    const auth = useContext(AuthContext);
+    const[isLoading,setIsLoading] = useState(false);    //controls the loading spinner
 
     //NOTE, passing useState function as a prop is valid react technique...
 
@@ -40,33 +42,39 @@ export default function Update(){
         fetchPlace();
     },[placeName]);  //should only be called when dropdown changes and on initial render 
     
-
     //function called on submition of the html form 
     const markerUpdateSubmitHandler =  async (event) =>{   
-        
+        event.preventDefault(); //NEEDTHIS
+        setIsLoading(true);
+        //NOTE USING PROTECTED ROUTE HERE, WE MUST PROVIDE A TOKEN!!!, or this request wont work -> check backend code
         const url = `http://localhost:5000/api/places/upload/${placeName}`;  
-       
+    
         try{
         const fd = new FormData();
         fd.append('description', loadedPlace);
-        fd.append('image', file);
+        console.log(file);
+
+        for(var x = 0; x<file.length; x++){
+            fd.append('image', file[x]);
+        }
 
         const requestOptions = {
             method: 'POST',
-            body:fd
+            body:fd,
+            headers:{Authorization: 'Bearer ' + auth.token}     //attatch token, retrieved from context 
         }
-
+        //Authorization: 'Bearer' + auth.token
         await fetch(url,requestOptions);
         }catch(err){
 
         };
-    
+        setIsLoading(false);
+       
     }
     
     return(
         <div className = "updateDiv">
         <form className = "updateForm" onSubmit={markerUpdateSubmitHandler}>
-
             <div className = "selectComponent">
                 <Selection selection = {setPlaceName}></Selection>   
             </div>
@@ -94,56 +102,11 @@ export default function Update(){
                 <Button disabled = {false} type = "submit" text = "Update Marker"></Button>
             </div>
 
+            {isLoading && <LoadingSpinner asOverlay/>}
+
         </form>
         </div>
     )
 }
 
-
-/*
-let fileRead;
-        event.preventDefault();
-        if(file){             
-            console.log(file);
-        }
-
-        //getting encoded data of image file 
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () =>{
-            console.log("logging from onloadend");
-            fileRead = reader.result;
-        };
-        reader.onerror = () =>{
-            console.error("error occured with data url");
-        };
-
-        try{
-            await fetch('http://localhost:5000/api/places/upload',{
-                method: 'POST',
-                body: JSON.stringify({data: fileRead }),
-                headers: { 'Content-Type': 'application/json' },  //NEEDED THIS !!!!
-            }
-            );
-        }catch(err){
-            console.log("there is a problem with the fetch",err);
-        }
-
-        
-        /*
-        //sending the description off to the backend 
-        try{
-            await fetch(
-                `http://localhost:5000/api/places/${placeName}`,
-                {
-                    method: 'PATCH',
-                    body: {
-                        "description": newDescription
-                    }
-                }
-            );   
-        }catch(err){
-            console.log(err);
-        }
-         */
 

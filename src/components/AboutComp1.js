@@ -1,13 +1,14 @@
 import profile from "../navImages/lee-shadeck.jpg"
+import map from "../navImages/leeWall.jpg"
 import "../styles/aboutcomp1.css"
 import {Link} from "react-router-dom";
 
 function AboutComp1() {
   return (
-    <body>
+    
       <section className="about">
         <div className="content">
-            <img src={profile} alt = "Lee Shadeck"/>
+            <img src={profile} alt = "Lee Shadeck"/> 
             <div className="text">
                 <h1>About <span>Lee's Map</span></h1>
                 <h5>Interactive Map</h5>
@@ -21,7 +22,7 @@ function AboutComp1() {
             </div>
         </div>
       </section>
-    </body>
+    
   );
 }
 

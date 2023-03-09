@@ -9,7 +9,7 @@ from 'react-router-dom';
 
 //PAGE components for nav
 import MapDisplay from './components/MapDisplay.js';
-import Update from './components/Update.js';
+import Update from './components/formComponents/Update.js';
 import About from './components/AboutComp1';
 import Auth from './components/login/Auth'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -22,20 +22,22 @@ import { Nav } from 'react-bootstrap';
 //basically whole application has access to auth-context
 function App() {
 
-  const[isLoggedIn,setIsLoggedIn] = useState(false);   //controls logged in state, passed to context
-
+  const[token, setToken] = useState(false);   //controls logged in state, passed to context
+  const[userId,setUserId] = useState(false);
   //wrap with usecallback so it is not recreated 
-  const login = useCallback(()=>{    //passed to context
-    setIsLoggedIn(true);
+  const login = useCallback((uid,token)=>{    //passed to context
+    setToken(token);
+    setUserId(uid);
   },[]);
   
   const logout = useCallback(()=>{    
-    setIsLoggedIn(false);
+    setToken(null);
+    setUserId(null);
   },[]);
 
   let routes;
 
-  if(isLoggedIn){
+  if(token){
     routes = 
     (
       <Routes>
@@ -63,16 +65,23 @@ function App() {
         </Route>
 
       <Route path = "/about" exact = {true} element = 
-      {<About></About>}>
-      </Route>
-      <Route path = "*" element = {<Navigate to = "/Login"/>}/>
+      {<About></About>}></Route>
+      
+      <Route path = "*" element = {<Navigate to = "/Login"/>}/> 
       </Routes>
     );
   }
 
   //value paramater - values 
   return(
-    <AuthContext.Provider value={{isLoggedIn:isLoggedIn, login:login, logout:logout}}>  
+    <AuthContext.Provider 
+      value={{
+        isLoggedIn:!!token,     //store answer to are we logged in???
+        token:token,            //store token in the context
+        userId:userId,
+        login:login, 
+        logout:logout
+        }}>  
     <Router>
       <MainNavigation/>
       <main>

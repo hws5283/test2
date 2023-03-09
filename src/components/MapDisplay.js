@@ -1,7 +1,8 @@
 import {MapContainer,TileLayer, Marker, Popup, useMap, LayerGroup, Circle, CircleMarker, LayersControl} from 'react-leaflet'
 import L, { map, marker } from 'leaflet'
 import {useRef, useEffect, useState} from 'react'
-import lakeMarker from '../navImages/lakeIcon.webp'
+import TreeIcon from '../navImages/treeIcon.png'
+import LakeIcon from '../navImages/lakeIcon.webp'
 import LeftSearch from './leftSearch'
 import MapButtons from './MapButtons'
 import Atlas from './Atlas'
@@ -23,7 +24,7 @@ function MapDisplay(props){
     const[showLayerLake, showLLk] = useState(false);
 
     //source of map images
-    const tileUrl = '../cuts/{z}/{x}/{y}.png';
+    const tileUrl = '../cutsv2/{z}/{x}/{y}.png';
 
     //this effect is responsible for using the api and getting only the coordinates and name of all markers from controller
     useEffect(()=>{
@@ -37,7 +38,7 @@ function MapDisplay(props){
                 }
                 else{
                     //we got a response...
-                    console.log(responseData);
+                    console.log("marker data retreived");
                 }
                 setLoadedMarks(responseData.mapPlaces);  //set loaded marker data, "mapPlaces array", triggering useState here ->reload page 
             }catch(err){
@@ -66,19 +67,25 @@ function MapDisplay(props){
         }
      }
 
+    //map icons 
+    const woodsIcon = new L.Icon({
+        iconUrl: TreeIcon,
+        iconSize:[26,26]
+    });
+
+    const lakeIcon = new L.Icon({
+        iconUrl: LakeIcon,
+        iconSize:[26,26]
+    });
+
     //the map ref
     const testRef= useRef();
     const center = [0,0];
     const fillBlueOptions = { Color: 'blue'};
     const bounds = [
-        [100,-185],
-        [-100, 185],
+        [500,-500],
+        [-500, 500],
     ]
-
-    const lakeIcon = new L.Icon({
-        iconUrl:lakeMarker,
-        iconSize:[26,26]
-    });
 
     //handles button clicks from leftsearch component (function passed as prop)
     //ultimately calls in button components reaches here
@@ -139,8 +146,6 @@ function MapDisplay(props){
         </div>
         </section>
    
-
-      
         <section className="MapDisplayBody">
         <div className = "mapDisplay">    
         {/*responsible for creating map instance and providing to child components, props used as map options  */
@@ -193,7 +198,7 @@ function MapDisplay(props){
                 </Circle>
                 }             
     
-                <TileLayer minZoom={2} maxZoom = {4} noWrap = {true}
+                <TileLayer minZoom={2} maxZoom = {3} noWrap = {true}
                     url={tileUrl}
                 />
 
@@ -203,7 +208,7 @@ function MapDisplay(props){
                 <Marker
                     id = {location.title}
                     key = {location.title}
-                    icon = {lakeIcon} 
+                    icon = {(true) ? woodsIcon: lakeIcon }
                     position={[location.yPoint,location.xPoint]} 
                     ref = {(ref)=>{
                         markerRefs.current[location.title] = ref;
@@ -240,7 +245,10 @@ function MapDisplay(props){
                     <div className = "link-data">
                         {clickedMarker.link &&
                             clickedMarker.link.map((element)=>(
+                                <div>
                                 <a href = {element}>More Information About {location.title} </a>
+                                <br></br>
+                                </div>
                             ))
                         }
                     </div>
