@@ -50,6 +50,7 @@ const ImageUpload = props =>{
             />
 
             <div className = "image-upload">
+                <div className = "previewImgs">
                 {previewUrl &&
                 previewUrl.map((element, index)=>(
                     <div className = "image-upload-preview">
@@ -58,6 +59,7 @@ const ImageUpload = props =>{
                      </div>
                 ))
                 }
+                </div>
             </div>
 
             <button type = "button" onClick = {pickImageHandler}>Upload Image</button>

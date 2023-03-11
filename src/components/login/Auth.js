@@ -61,7 +61,7 @@ const Auth = ()=>{
     return(
 
         <section className = "loginSection">
-        <div>
+        <div className = "loginDiv">
         <Card className = "authentication">
         {isLoading && <LoadingSpinner asOverlay/>}
         <form className="place-form" onSubmit={authSubmitHandler}>

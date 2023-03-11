@@ -54,7 +54,7 @@ export default function Update(){
         fd.append('description', loadedPlace);
         console.log(file);
 
-        for(var x = 0; x<file.length; x++){
+        for(var x = 0; x<file.length; x++){  //loop through file array and attach files to form data
             fd.append('image', file[x]);
         }
 
@@ -74,6 +74,7 @@ export default function Update(){
     
     return(
         <div className = "updateDiv">
+        <div className = "formDiv">
         <form className = "updateForm" onSubmit={markerUpdateSubmitHandler}>
             <div className = "selectComponent">
                 <Selection selection = {setPlaceName}></Selection>   
@@ -105,6 +106,7 @@ export default function Update(){
             {isLoading && <LoadingSpinner asOverlay/>}
 
         </form>
+        </div>
         </div>
     )
 }

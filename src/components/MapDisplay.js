@@ -2,7 +2,7 @@ import {MapContainer,TileLayer, Marker, Popup, useMap, LayerGroup, Circle, Circl
 import L, { map, marker } from 'leaflet'
 import {useRef, useEffect, useState} from 'react'
 import TreeIcon from '../navImages/treeIcon.png'
-import LakeIcon from '../navImages/lakeIcon.webp'
+import MntIcon from '../navImages/mountainIcon.png'
 import LeftSearch from './leftSearch'
 import MapButtons from './MapButtons'
 import Atlas from './Atlas'
@@ -74,7 +74,7 @@ function MapDisplay(props){
     });
 
     const lakeIcon = new L.Icon({
-        iconUrl: LakeIcon,
+        iconUrl: MntIcon,
         iconSize:[26,26]
     });
 
@@ -83,15 +83,15 @@ function MapDisplay(props){
     const center = [0,0];
     const fillBlueOptions = { Color: 'blue'};
     const bounds = [
-        [500,-500],
-        [-500, 500],
+        [600,-500],
+        [-100, 200],
     ]
 
     //handles button clicks from leftsearch component (function passed as prop)
     //ultimately calls in button components reaches here
     //react leaflet automatically pans to these markers on activation 
     const clickHandler = (title) =>{
-        console.log(title);
+        markerClick(title);
         const markerToOpen = markerRefs.current[title]; //the marker ref of specific value of button clicked
         if (markerToOpen){
              markerToOpen.openPopup();           //show the popup display 
@@ -140,11 +140,11 @@ function MapDisplay(props){
         
     <div className = "mainDiv" data-testid = "mapDisplay-1">
        
-        <section className = "MapDisplayBody">
+        
         <div className = "mapDisplaySearch">
             <LeftSearch data-testid = "leftSearch-1" locations = {Data} eventFunction = {clickHandler}></LeftSearch>
         </div>
-        </section>
+       
    
         <section className="MapDisplayBody">
         <div className = "mapDisplay">    
@@ -154,7 +154,7 @@ function MapDisplay(props){
             <MapContainer
                 className = "map-container"
                 ref = {testRef}
-                maxBounds = {bounds}
+                
                 center={[9,-22]} 
                 zoom={13} 
                 scrollWheelZoom={true} 
@@ -208,7 +208,7 @@ function MapDisplay(props){
                 <Marker
                     id = {location.title}
                     key = {location.title}
-                    icon = {(true) ? woodsIcon: lakeIcon }
+                    icon = {lakeIcon}
                     position={[location.yPoint,location.xPoint]} 
                     ref = {(ref)=>{
                         markerRefs.current[location.title] = ref;
@@ -274,8 +274,8 @@ function MapDisplay(props){
             </div>
         </div>   
         </section>
-     
         </div>
+     
     )
 }
 

@@ -1,8 +1,12 @@
 .updateDiv{
    display:block;
    background-color: #161922;
-   height: 800px;
-   padding-top: 50px;
+   height: 100vh;
+   overflow-y: auto;
+   padding-top: 4rem;
+}
+.formDiv{
+    padding-top: 50px;;
 }
 
 .flex-row{
@@ -10,7 +14,7 @@
 }
 .box1{
     position: relative;
-    max-width: 100%;
+    max-width: 90%;
 }
 
 .descriptionUpdate{

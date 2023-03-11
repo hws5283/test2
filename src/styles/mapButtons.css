@@ -1,7 +1,7 @@
 .mapControl{
     background-color: #161922;
     height:120px;
-    width:369px;
+    width:100%;
     display:flex;
 }
 
