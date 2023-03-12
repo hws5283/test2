@@ -1,8 +1,11 @@
 import {MapContainer,TileLayer, Marker, Popup, useMap, LayerGroup, Circle, CircleMarker, LayersControl} from 'react-leaflet'
 import L, { map, marker } from 'leaflet'
 import {useRef, useEffect, useState} from 'react'
-import TreeIcon from '../navImages/treeIcon.png'
-import MntIcon from '../navImages/mountainIcon.png'
+import TreeIcon from '../navImages/treeIconV2.png'
+import MntIcon from '../navImages/mountainIconV2.png'
+import OceanIcon from '../navImages/oceanIconClear.png'
+import LakeIcon from '../navImages/lakeIconUse.png'
+import IceIcon from '../navImages/iceV2.png'
 import LeftSearch from './leftSearch'
 import MapButtons from './MapButtons'
 import Atlas from './Atlas'
@@ -68,15 +71,32 @@ function MapDisplay(props){
      }
 
     //map icons 
-    const woodsIcon = new L.Icon({
+    const woodSymbol = new L.Icon({
         iconUrl: TreeIcon,
         iconSize:[26,26]
     });
 
-    const lakeIcon = new L.Icon({
+    const mntSymbol = new L.Icon({
         iconUrl: MntIcon,
         iconSize:[26,26]
     });
+
+    const lakeSymbol = new L.Icon({
+        iconUrl: LakeIcon,
+        iconSize:[26,26]
+    });
+
+    const iceSymbol = new L.Icon({
+        iconUrl: IceIcon,
+        iconSize:[26,26]
+    });
+
+    const oceanSymbol = new L.Icon({
+        iconUrl: OceanIcon,
+        iconSize:[26,26]
+    });
+
+    
 
     //the map ref
     const testRef= useRef();
@@ -130,12 +150,16 @@ function MapDisplay(props){
         }
     
     }
-    /*
-        <Circle center = {[5,-110]} pathOptions = {fillBlueOptions} radius = {2000000}></Circle>
-        <Circle center = {[33,60]} pathOptions = {fillBlueOptions} radius = {4000000}></Circle>
-        <Circle center = {[50,-80]} pathOptions = {fillBlueOptions} radius = {3000000}></Circle>
-        
-    */
+    
+    //returns the correct icon based on document area string 
+    const iconSelector = (area) =>{
+        if(area === "woodlands"){
+            return woodSymbol
+        }
+        if(area === "alpine"){
+            return mntSymbol
+        }
+    }
     return(
         
     <div className = "mainDiv" data-testid = "mapDisplay-1">
@@ -208,7 +232,7 @@ function MapDisplay(props){
                 <Marker
                     id = {location.title}
                     key = {location.title}
-                    icon = {lakeIcon}
+                    icon = {lakeSymbol}
                     position={[location.yPoint,location.xPoint]} 
                     ref = {(ref)=>{
                         markerRefs.current[location.title] = ref;

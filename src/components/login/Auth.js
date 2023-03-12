@@ -25,7 +25,7 @@ const Auth = ()=>{
             isValid: false
         },
         password: {
-            value: '',              //given to login route
+            value: '',              //given to login routed
             isValid: false
         }
         },

@@ -1,7 +1,6 @@
 import "../styles/atlas.css"
 import section1 from "../devInfo/gsf.json"
 import section2 from "../devInfo/llucianLake.json"
-import lakeMarker from '../navImages/lakeIcon.webp'
 import AtlasMarkerComponent from "./AtlasMakrerComponent"
 import {useEffect, useState} from 'react'
 export default function Atlas(props){
