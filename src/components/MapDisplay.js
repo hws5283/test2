@@ -1,11 +1,12 @@
-import {MapContainer,TileLayer, Marker, Popup, useMap, LayerGroup, Circle, CircleMarker, LayersControl} from 'react-leaflet'
-import L, { map, marker } from 'leaflet'
-import {useRef, useEffect, useState} from 'react'
+import {MapContainer,TileLayer, Marker, Popup, Circle} from 'react-leaflet'
+import L from 'leaflet'
+import {useRef, useEffect, useState, useReducer} from 'react'
 import TreeIcon from '../navImages/treeIconV2.png'
 import MntIcon from '../navImages/mountainIconV2.png'
 import OceanIcon from '../navImages/oceanIconClear.png'
 import LakeIcon from '../navImages/lakeIconUse.png'
 import IceIcon from '../navImages/iceV2.png'
+import CoastIcon from '../navImages/coastal.png'
 import LeftSearch from './leftSearch'
 import MapButtons from './MapButtons'
 import Atlas from './Atlas'
@@ -17,8 +18,6 @@ import Data from '../devInfo/mapLocations'
 function MapDisplay(props){
 
     const markerRefs = useRef({});   //give useRef an array 
-    const layerGroup = useRef();
-    const ShadeckForestLayer = useRef();
     const [clickedMarker, setMarker] = useState(null);     //the current marker the user clicked***
     const[isLoading, setIsLoading] = useState(false);   //loading state
     const[loadedMarks, setLoadedMarks] = useState([]);    //loaded marker data
@@ -26,8 +25,7 @@ function MapDisplay(props){
     const[showLayerGSF, showGSF] = useState(false);
     const[showLayerLake, showLLk] = useState(false);
 
-    //source of map images
-    const tileUrl = '../cutsv2/{z}/{x}/{y}.png';
+    const [btnRef,setButtonRef] = useState();
 
     //this effect is responsible for using the api and getting only the coordinates and name of all markers from controller
     useEffect(()=>{
@@ -52,6 +50,7 @@ function MapDisplay(props){
         sendGetLocations();   //call the function  **
     },[]);   //only called when page renders, no dependencies to call this again
 //-----------------------------------------------------------------------------------------------------------------------------------------
+
     //utilizes react leaflet events -> function executes when marker is clicked, given name of marker 
     const markerClick = async(markerName) =>{
         try{
@@ -69,6 +68,17 @@ function MapDisplay(props){
             setError(err.message);   //set the error 
         }
      }
+
+     //the map ref
+    const mapRef= useRef();
+    //source of map images
+    const tileUrl = '../cutsv2/{z}/{x}/{y}.png';
+    const center = [0,0];
+    const fillBlueOptions = { Color: 'blue'};
+    const bounds = [
+        [600,-500],
+        [-100, 200],
+    ]
 
     //map icons 
     const woodSymbol = new L.Icon({
@@ -96,43 +106,52 @@ function MapDisplay(props){
         iconSize:[26,26]
     });
 
+    const coastSymbol = new L.Icon({
+        iconUrl: CoastIcon,
+        iconSize:[26,26]
+    });
     
-
-    //the map ref
-    const testRef= useRef();
-    const center = [0,0];
-    const fillBlueOptions = { Color: 'blue'};
-    const bounds = [
-        [600,-500],
-        [-100, 200],
-    ]
-
-    //handles button clicks from leftsearch component (function passed as prop)
-    //ultimately calls in button components reaches here
-    //react leaflet automatically pans to these markers on activation 
-    const clickHandler = (title) =>{
-        markerClick(title);
+    //triggered by left search buttons
+    const clickHandler = (title,activation,ref) =>{
+        console.log(ref.current);
+        console.log(activation);
+        setButtonRef(ref.current);
         const markerToOpen = markerRefs.current[title]; //the marker ref of specific value of button clicked
-        if (markerToOpen){
-             markerToOpen.openPopup();           //show the popup display 
+        
+        if(ref.current.className === "glow-button"){
+            markerClick(title);
+            markerToOpen.openPopup();   //automatically calls popupclosehandler()
+            ref.current.className = "glow-button-active";
+        }
+        else{
+            markerToOpen.closePopup();    
+            ref.current.className = "glow-button" 
+        }
+        
+    }
+
+    //called when popup is closed on map display(note: only 1 popup is open at a time)
+    const popUpCloseHandler = () =>{
+        console.log("popup close handler called ");
+        if(btnRef){
+        if(btnRef.className === "glow-button-active"){
+            btnRef.className = "glow-button"
+        }
         }
     }
 
     //center map, function passed as prop to mapButtons
     const centerHandler = () => {
-       testRef.current.flyTo(center, 2, {duration:2}); 
+       mapRef.current.flyTo(center, 2, {duration:2}); 
     }
-
     //zoom to max zoom level
     const zoomInHandler = () =>{
-        testRef.current.setZoom(4);
+        mapRef.current.setZoom(3);
     };
-
     //zoom out to lowest zoom level 
     const zoomOutHandler= () =>{
-        testRef.current.setZoom(2);
+        mapRef.current.setZoom(2);
     }
-   
     //called to open raster cirlce layer for areas of map 
     const testLayerFunction = (buttonTitle) =>{
         if(buttonTitle === "Great Shadeck Forest"){
@@ -145,13 +164,11 @@ function MapDisplay(props){
             if(!showLayerLake)
                 showLLk(true);
             else
-                showLLk(false);
-            
+                showLLk(false); 
         }
-    
     }
-    
-    //returns the correct icon based on document area string 
+    //returns the correct icon based on document area string to show different markers 
+    //just check what the field is in the mongodb document
     const iconSelector = (area) =>{
         if(area === "woodlands"){
             return woodSymbol
@@ -159,17 +176,29 @@ function MapDisplay(props){
         if(area === "alpine"){
             return mntSymbol
         }
+        if(area === "lake"){
+            return lakeSymbol
+        }
+        if(area === "ice"){
+            return iceSymbol
+        }
+        if(area === "ocean"){
+            return oceanSymbol
+        }
+        if(area === "coast"){
+            return coastSymbol
+        }
+        else
+        return woodSymbol
     }
     return(
         
     <div className = "mainDiv" data-testid = "mapDisplay-1">
        
-        
         <div className = "mapDisplaySearch">
-            <LeftSearch data-testid = "leftSearch-1" locations = {Data} eventFunction = {clickHandler}></LeftSearch>
+            <LeftSearch locations = {Data} eventFunction = {clickHandler}></LeftSearch>
         </div>
-       
-   
+
         <section className="MapDisplayBody">
         <div className = "mapDisplay">    
         {/*responsible for creating map instance and providing to child components, props used as map options  */
@@ -177,14 +206,12 @@ function MapDisplay(props){
         }
             <MapContainer
                 className = "map-container"
-                ref = {testRef}
-                
+                ref = {mapRef}
                 center={[9,-22]} 
                 zoom={13} 
                 scrollWheelZoom={true} 
                 style = {{height: "752px", width: "800px"}}
                >
-
                 {showLayerGSF &&
                     <Circle center = {[-20,15]} pathOptions ={fillBlueOptions} radius = {4600000}>
                         <Popup>
@@ -232,14 +259,17 @@ function MapDisplay(props){
                 <Marker
                     id = {location.title}
                     key = {location.title}
-                    icon = {lakeSymbol}
+                    icon = {iconSelector(location.area)}
                     position={[location.yPoint,location.xPoint]} 
                     ref = {(ref)=>{
                         markerRefs.current[location.title] = ref;
                     }} 
                     eventHandlers={{
                         click: (e) => {
-                         markerClick(location.title); //on click we get the rest of the markers data to display 
+                         markerClick(location.title) //on click we get the rest of the markers data to display 
+                    },
+                    popupclose:()=>{        //called when a popup is closed 
+                       popUpCloseHandler();
                     }
                     }}
                 >
@@ -283,7 +313,6 @@ function MapDisplay(props){
                 </Marker>   
                 ))
                 }  
-            
            </MapContainer>
         </div>   
         </section>

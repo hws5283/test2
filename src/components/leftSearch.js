@@ -34,10 +34,8 @@ const LeftSearch = (props) => {
     }
 
     return(
-        <div className = "leftSearch">  
-
+        <div className = "leftSearch"> 
         <div className = "test3">
-            
              <Search
                 onInputChange = {searchInputHandler}
              />
@@ -50,42 +48,13 @@ const LeftSearch = (props) => {
                     />
                 ))}
              </div>
-           
         </div>
-
     </div> //END MAIN DIV
     )
 }
 
 export default LeftSearch;
 
-    //const inputRef = useRef();
-    //const position = [9, -22];
-    //const tileUrl = '../cuts/{z}/{x}/{y}.png';
-
-    //const mapRef = useRef(null); //map reference 
-    //const markerRefs = useRef({});   //ref array ***
-
-
-
-    //parameter "title" is text of each button 
-    //better to define these functions not inline 
-    //const clickHandler =(title) =>{       //called by buttons not the components 
-
-      //  inputRef.current.value = title;  //set input field to button click using hook 
-      //  const markerToOpen = markerRefs.current[title]; //the marker ref
-      //  const myMap = mapRef.current;           //map ref - ALWAYS THE SAME
-      //  if (markerToOpen){
-        //     markerToOpen.openPopup();           //show the popup display 
-       // }
-
-       // if (!myMap) {
-      //      return
-      //  }
-    
-      //  myMap.flyTo(markerToOpen.positionX,markerToOpen.positionY);   //use current marker x and y 
-        
-   // }
 
 
 

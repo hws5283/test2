@@ -1,5 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react'
 import '../../styles/imageupload.css'
+import Button from './FormButton'
 const ImageUpload = props =>{
 
     const[file,setFile] = useState([]);    //files under state
@@ -62,7 +63,7 @@ const ImageUpload = props =>{
                 </div>
             </div>
 
-            <button type = "button" onClick = {pickImageHandler}>Upload Image</button>
+            <Button type = "button" onClick = {pickImageHandler} text = "Upload Image"></Button>
             {!isValid && <p>{props.errorText}</p>}
         </div>
     )
