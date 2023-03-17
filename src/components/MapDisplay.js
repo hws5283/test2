@@ -113,8 +113,6 @@ function MapDisplay(props){
     
     //triggered by left search buttons
     const clickHandler = (title,activation,ref) =>{
-        console.log(ref.current);
-        console.log(activation);
         setButtonRef(ref.current);
         const markerToOpen = markerRefs.current[title]; //the marker ref of specific value of button clicked
         
@@ -127,7 +125,6 @@ function MapDisplay(props){
             markerToOpen.closePopup();    
             ref.current.className = "glow-button" 
         }
-        
     }
 
     //called when popup is closed on map display(note: only 1 popup is open at a time)
