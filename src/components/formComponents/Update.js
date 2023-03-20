@@ -69,7 +69,6 @@ export default function Update(){
 
         };
         setIsLoading(false);
-       
     }
     
     return(

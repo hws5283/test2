@@ -1,13 +1,53 @@
+.atlasIcon{
+
+}
+
+.atlasEntryContainer{
+    padding-bottom: 10px;
+}
+
+.atlasVisual{
+    float: left;
+}
 
 
 .h1Regions{
     font-family: sans-serif;
-    color:  rgba(255, 255, 255, 0.8);
-    background-color: rgb(91, 133, 102);
-
+    font-weight:bold;
+    text-decoration: none;
+    background-color: #7ca877;
+    border: 2px solid transparent;
+    border-radius: 30px;
+    height: 30px;
 }
 
-.h1Regions:hover{
-    color: rgba(255, 255, 255, 1);
-    box-shadow: 0 5px 15px rgb(91, 133, 102);
+.activeh1Regions{
+    font-family: sans-serif;
+    font-weight:bold;
+    text-decoration: none;
+    background-color:bisque;
+    border: 2px solid transparent;
+    border-radius: 30px;
+    height: 30px;
+}
+
+.h2Regions{
+    font-family: sans-serif;
+    font-weight:bold;
+    text-decoration: none;
+    background-color: rgb(219, 142, 114);
+    border: 2px solid transparent;
+    border-radius: 30px;
+    height: 30px;
+   
+}
+
+.activeh2Regions{
+    font-family: sans-serif;
+    font-weight:bold;
+    text-decoration: none;
+    background-color:bisque;
+    border: 2px solid transparent;
+    border-radius: 30px;
+    height: 30px;
 }

@@ -12,6 +12,7 @@ import MapButtons from './MapButtons'
 import Atlas from './Atlas'
 import '../styles/mapdisplay.css'
 import Data from '../devInfo/mapLocations'
+import {useSelector, useDispatch} from 'react-redux';
 //This component displays the react leaflet map 
 //markers positions -> y,x for correct positions 
 
@@ -21,11 +22,10 @@ function MapDisplay(props){
     const [clickedMarker, setMarker] = useState(null);     //the current marker the user clicked***
     const[isLoading, setIsLoading] = useState(false);   //loading state
     const[loadedMarks, setLoadedMarks] = useState([]);    //loaded marker data
-    const[error,setError] = useState();
     const[showLayerGSF, showGSF] = useState(false);
     const[showLayerLake, showLLk] = useState(false);
-
     const [btnRef,setButtonRef] = useState();
+    const dispatch = useDispatch();
 
     //this effect is responsible for using the api and getting only the coordinates and name of all markers from controller
     useEffect(()=>{
@@ -43,7 +43,7 @@ function MapDisplay(props){
                 }
                 setLoadedMarks(responseData.mapPlaces);  //set loaded marker data, "mapPlaces array", triggering useState here ->reload page 
             }catch(err){
-                setError(err.message);   //set the error 
+                console.log(err);
             }
             setIsLoading(false);  //finished loading 
         }
@@ -65,7 +65,7 @@ function MapDisplay(props){
             }
             setMarker(responseData.placebyName);  //set object 
         }catch(err){
-            setError(err.message);   //set the error 
+            console.log(err);
         }
      }
 
@@ -74,7 +74,7 @@ function MapDisplay(props){
     //source of map images
     const tileUrl = '../cutsv2/{z}/{x}/{y}.png';
     const center = [0,0];
-    const fillBlueOptions = { Color: 'blue'};
+    const fillBlueOptions = { color: "orange"};
     const bounds = [
         [600,-500],
         [-100, 200],
@@ -110,7 +110,11 @@ function MapDisplay(props){
         iconUrl: CoastIcon,
         iconSize:[26,26]
     });
-    
+    //NOTE ****
+    //IF WE USE THE BUTTONS ON THE LEFT WE ALTER THE CSS OF THAT BUTTON WHEN CLICKED, IF WE JUST CLICK A MARKER ON THE MAP, NO BUTTON
+    //ON THE LEFT WILL HAVE ITS STYLE CHANGED (DIDNT USE THAT BUTTON TO OPEN THE MARKER), WHEN A MARKER IS OPENED BY CLICKING THE MAP
+    //ONLY THE ATLAS WILL HAVE A SPECIFIC TITLE CARD CHANGE COLORS TO INDICATE THE MARKER IS OPEN NO BUTTON ON THE LEFT WILL CHANGE
+    //IF A BUTTON ON THE LEFT IS USED TO OPEN A POPUP THE ATLAS WILL ALSO INDICATE WHAT POPUP IS BEING SHOWN
     //triggered by left search buttons
     const clickHandler = (title,activation,ref) =>{
         setButtonRef(ref.current);
@@ -129,13 +133,16 @@ function MapDisplay(props){
 
     //called when popup is closed on map display(note: only 1 popup is open at a time)
     const popUpCloseHandler = () =>{
-        console.log("popup close handler called ");
         if(btnRef){
         if(btnRef.className === "glow-button-active"){
             btnRef.className = "glow-button"
         }
         }
     }
+
+    //const popUpOpenHandler = () =>{
+     //   console.log("marker opened from line 127");
+    //}
 
     //center map, function passed as prop to mapButtons
     const centerHandler = () => {
@@ -263,10 +270,15 @@ function MapDisplay(props){
                     }} 
                     eventHandlers={{
                         click: (e) => {
-                         markerClick(location.title) //on click we get the rest of the markers data to display 
+                        markerClick(location.title) //on click we get the rest of the markers data to display 
                     },
-                    popupclose:()=>{        //called when a popup is closed 
+                    popupclose:()=>{
+                       dispatch({type: 'markerClose'});      
                        popUpCloseHandler();
+                    },
+                    popupopen:()=>{     //called wether you click a button on the left or open a marker manually*
+                       dispatch({type: 'markerOpen', name:location.title});
+                       //popUpOpenHandler();
                     }
                     }}
                 >
@@ -320,7 +332,7 @@ function MapDisplay(props){
                  <MapButtons activation = {centerHandler} activation2 = {zoomOutHandler} activation3 = {zoomInHandler}></MapButtons>
             </div>
             <div>
-                 <Atlas activeMarker = {clickedMarker} layerController = {testLayerFunction} ></Atlas>
+                 <Atlas layerController = {testLayerFunction} ></Atlas>
             </div>
         </div>   
         </section>
