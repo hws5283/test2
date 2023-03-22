@@ -1,20 +1,26 @@
-import React, {useState} from 'react'
+import React, {useState,useReducer, useEffect} from 'react'
 import { propTypes } from 'react-bootstrap/esm/Image'
 import Data from '../../devInfo/updateLocations.json'
 import '../../styles/selection.css'
 
+
+
+
 export default function Selection(props){
 
-    const changePointSelection = (e) =>{
-       props.selection(e.target.value);     //pass to update component the current selection 
-    }
-
+   const changeHandler = (event)=>{
+      props.reducer({
+        type: "SELECTION_CHANGE",
+        value: event.target.value
+      })
+   }
+    
     return(
         <div className = "dropDown" >
-                <select className = "selectOption" onChange={changePointSelection}>
+                <select className = "selectOption" onChange={changeHandler}>
                     {
                         Data.map((optionItem)=>(
-                            <option>{optionItem.location}</option>
+                            <option key = {optionItem.location} >{optionItem.location}</option>
                         ))
                     }
                 </select>

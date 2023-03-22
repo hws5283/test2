@@ -1,18 +1,23 @@
 import React from 'react'
-import {useReducer, useState, useEffect} from 'react'
-import Data from '../../devInfo/mapLocations'
+import {useReducer, useEffect} from 'react'
 import '../../styles/input.css'
-import {validate} from '../../utils/validators'
-
 
 
 const Input = props =>{
 
-
-    //called for every key stroke when input changes 
-    const changeHandler = event =>{
-        props.updater(event.target.value);
+    const changeHandler = (event) =>{
+       props.reducer({
+          type: "INPUT_CHANGE",
+          value: event.target.value
+       })
     }
+    //need this, on reloads send an action to the reducer 
+    useEffect(()=>{
+      props.reducer({
+        type: "INPUT_CHANGE",
+        value: props.initialValue
+      })
+    },[props.initialValue])
 
     return(
         <div className = "textBox">
@@ -20,15 +25,11 @@ const Input = props =>{
                  <label className = "LabelArea" htmlFor= {props.id}>{props.label}</label>
             </div>
             <div className = "decriptionInput">
-                <textarea className = "descriptionArea" id = {props.id} rows = {10} cols = {50} onChange = {changeHandler} value = {props.initialValue} disabled = {props.disabled}></textarea>
-                
-            </div>
-                
+                <textarea className = "descriptionArea" id = {props.id} rows = {10} cols = {50} onChange = {changeHandler} value = {props.initialValue}></textarea>
+            </div>   
         </div>
     )
-
 }
-
 export default Input;
 
     

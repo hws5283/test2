@@ -5,21 +5,8 @@ const ImageUpload = props =>{
 
     const[file,setFile] = useState([]);    //files under state
     const[previewUrl, setPreviewUrl] = useState([]);    //preview urls for frontend 
-    const[isValid, setIsValid] = useState(false);
     const filePickerRef = useRef();
-    const[index,setIndex] = useState(0);
-/*
-    useEffect(()=>{
-        if(!file){
-            return;
-        }
-        const fileReader = new FileReader();   
-        fileReader.onload = () =>{
-            setPreviewUrl(state=>[...state, fileReader.result]);
-        };        //execute on new file 
-        fileReader.readAsDataURL(file[index]); 
-    },[file,index])  //only call when file changes 
-*/
+
     //executed on file change on the html input 
     const pickedHandler = event =>{   
 
@@ -27,12 +14,16 @@ const ImageUpload = props =>{
 
         const reader = new FileReader();
             reader.onload = ()=>{
-            setPreviewUrl([...previewUrl,reader.result]);   //add to url preview array 
+            setPreviewUrl([...previewUrl,reader.result]);   //add to url preview array (previewUrl)
         };  
         reader.readAsDataURL(files);
+
+        props.reducer({
+            type: "IMAGE_CHANGE",
+            formFiles: ([...file,files])
+        })
     
         setFile([...file,files]);   //add to files array
-        props.imageMove([...file,files]);   //add to update component files 
     }
 
     const pickImageHandler = () =>{
@@ -64,7 +55,7 @@ const ImageUpload = props =>{
             </div>
 
             <Button type = "button" onClick = {pickImageHandler} text = "Upload Image"></Button>
-            {!isValid && <p>{props.errorText}</p>}
+          
         </div>
     )
 }

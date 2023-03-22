@@ -9,6 +9,11 @@
     padding-top: 50px;;
 }
 
+.formFeedback{
+    color: rgb(15, 228, 15);
+    background-color: #161922 ;
+}
+
 .flex-row{
     display:flex;
 }

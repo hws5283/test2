@@ -16,6 +16,7 @@
 .displayImages{
         display: grid;
         grid-template-columns: auto auto;
+        grid-auto-flow: row dense;
         gap: 10px;
 }
 .description-body{
