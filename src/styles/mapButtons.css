@@ -1,26 +1,33 @@
 .mapControl{
-    background-color: rgb(53, 50, 49);
+    background-color: #161922;
     height:120px;
-    width:369px;
+    width:100%;
     display:flex;
 }
 
 .centerButton,.zoomOutButton,.zoomInButton{
-    font: inherit;
-        border: 1px solid #45a4f1;
-        border-radius: 4px;
-        background: #8de0f5;
-        color: black;
-        cursor: pointer;
-        text-decoration: none;
+    background: #95cdf0;
+    color: black;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: .4s;
+      text-align: center;
+      font-family: sans-serif;
         width: 90px;
         height: 70px;
 }
 .centerButton:hover,.zoomOutButton:hover,.zoomInButton:hover{
-    color: rgba(255, 255, 255, 1);
-    box-shadow: 0 5px 15px #a6d1e2;
+    transform: scale(1.03);
+    background: #161922;
+    border: 2px solid #95cdf0;
+    border-radius: 30px;
+    color: #95cdf0;
+    transition: .4s;
+    cursor: pointer;
 }
 .leftBtn{
-    padding-left:20px;
+    padding-left:15px;
     padding-top: 20px;
 }

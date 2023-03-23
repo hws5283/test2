@@ -1,17 +1,22 @@
 import React from 'react'
 import '../styles/atlasMarkerComponent.css'
-import { useEffect } from 'react';
+import {useRef, useEffect} from 'react';
+import {useSelector} from 'react-redux';
 
 function AtlasMarkerComponent(props){
 
-useEffect(() =>{
-    console.log()
-})
+    const name = useSelector(state => state.markerName);
+    const banner = useRef();
 
     return(
-        <p className = "h1Regions">
+        <div className = "atlasEntryContainer">
+        <div className = {(name === props.title) ? "active"+ props.styleInfo: props.styleInfo} ref = {banner}>
+            <div className = "atlasVisual">
+            <img className = "atlasIcon" src = {props.img} height = "26px" width = "26px" alt = "marker icon"></img>
             {props.title}
-        </p>
+            </div>
+        </div>
+        </div>  
     )
 }
 

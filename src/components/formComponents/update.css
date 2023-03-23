@@ -1,0 +1,43 @@
+.updateDiv{
+   display:block;
+   background-color: #161922;
+   height: 100vh;
+   overflow-y: auto;
+   padding-top: 4rem;
+}
+.formDiv{
+    padding-top: 50px;;
+}
+
+.formFeedback{
+    color: rgb(15, 228, 15);
+    background-color: #161922 ;
+}
+
+.flex-row{
+    display:flex;
+}
+.box1{
+    position: relative;
+    max-width: 90%;
+}
+
+.descriptionUpdate{
+    display:flex;
+    background-color: #161922;
+}
+.selectComponent{
+    background-color: #161922;
+    position:relative;
+}
+.updateForm{
+  position: relative;
+  list-style: none;
+  margin: 0 auto;
+  padding: 1rem;
+  width: 90%;
+  max-width: 40rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 6px;
+  background: #ffcc74;
+}

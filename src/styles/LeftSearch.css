@@ -4,13 +4,11 @@
 }
 
 .test3{
-    background-color: rgb(53, 50, 49);
-    height: 95.2vh;
-}
-
-.test4{
-    background-color: rgb(53, 50, 49);
-    color: white;
+    background-color: #161922;
+    width:100%; 
+    overflow-y: scroll;
+    height: 752px;
+    
 }
 
 .leftbuttonDiv{

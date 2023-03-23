@@ -1,15 +1,22 @@
+.MapDisplayBody{
+    height: 100%;
+    background-color: #161922;
+    z-index: 0;
+}
+.mapDisplaySearch{
+    height:100%;
+}
+
 .mainDiv{
     display:flex;
-    flex-grow: 1;
-}
-.mapDisplay{
-    display: flex;
-    flex-grow: 1;
+    background-color:  #161922;
+    margin-top: 4rem;
+    height:100vh;
 }
 .displayImages{
-   
         display: grid;
         grid-template-columns: auto auto;
+        grid-auto-flow: row dense;
         gap: 10px;
 }
 .description-body{
@@ -18,70 +25,4 @@
 .description-body-p{
     min-width: 300px;
 }
-.map-container{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    position: relative;
-}
-.atlas{
-    display: flex;
-    flex-direction: column;
-    width: 350px;
-    height: 95vh;
-    position: fixed;
-    top: 49px;
-    right: 0;
-}
 
-@media screen and (max-width: 1200px) {
-    /* styles for window widths below 1200px */
-    .mainDiv{
-        display: flex;
-        flex-direction: column;
-    }
-    .displayImages{
-        display: flex;
-        flex-direction: column;
-    }
-    .map-container{
-        display: flex;
-        flex-direction: column;
-    }
-    .leftSearch{
-        display: flex;
-        flex-direction: column;
-        width: 320px;
-    }
-    .atlas{
-        display: flex;
-        flex-direction: column;
-        width: 350px;
-        height: 95vh;
-        position: fixed;
-        top: 49px;
-        right: 0;
-        visibility: hidden;
-    }
-  }
-  
-  @media screen and (min-width: 1200px) {
-    /* styles for window widths above or equal to 1200px */
-    .mainDiv{
-        display: flex;
-        flex-direction: row;
-    }
-    .displayImages{
-        display: grid;
-        grid-template-columns: auto auto;
-        gap: 10px;
-    }
-    .map-container{
-        display: flex;
-        flex-direction: column;
-        width: calc(100% - 350px);
-        height: calc(100%- 350px);
-        position: relative;
-    }
-  }
-  

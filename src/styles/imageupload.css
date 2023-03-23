@@ -1,0 +1,33 @@
+.image-upload{
+    background-color: #161922;
+    padding-right:75px;
+    padding-left:75px;
+}
+.formImage{
+    background-color: #161922;
+}
+.previewImgs{  /*parent element */
+  display:grid;
+}
+
+.image-upload-preview{   /*children*/
+  width: 13rem;
+  height: 13rem;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+}
+.image-upload-preview img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.image-upload-preview p{
+  color:whitesmoke;
+}
+
+@media (min-width: 700px){
+  .previewImgs{grid-template-columns:(1,1fr);}
+}
+@media(min-width: 800px){
+  .previewImgs{grid-template-columns: auto auto;}
+}

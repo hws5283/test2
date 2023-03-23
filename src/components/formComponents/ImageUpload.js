@@ -1,42 +1,37 @@
 import React, {useRef, useState, useEffect} from 'react'
+import '../../styles/imageupload.css'
 import Button from './FormButton'
-
 const ImageUpload = props =>{
 
-    const[file,setFile] = useState();    //file under state
-    const[previewUrl, setPreviewUrl] = useState();    //preview url for frontend 
-    const[isValid, setIsValid] = useState(false);
-
-
+    const[file,setFile] = useState([]);    //files under state
+    const[previewUrl, setPreviewUrl] = useState([]);    //preview urls for frontend 
     const filePickerRef = useRef();
-
-    
-    useEffect(()=>{
-        if(!file){
-            return;
-        }
-        const fileReader = new FileReader();   
-        fileReader.onload = () =>{
-            setPreviewUrl(fileReader.result);  
-        };        //execute on new file 
-        fileReader.readAsDataURL(file); 
-    },[file])
-
-
 
     //executed on file change on the html input 
     const pickedHandler = event =>{   
-        setFile(event.target.files[0]);
-        props.imageMove(event.target.files[0]);
+
+        const files = event.target.files[0];
+
+        const reader = new FileReader();
+            reader.onload = ()=>{
+            setPreviewUrl([...previewUrl,reader.result]);   //add to url preview array (previewUrl)
+        };  
+        reader.readAsDataURL(files);
+
+        props.reducer({
+            type: "IMAGE_CHANGE",
+            formFiles: ([...file,files])
+        })
+    
+        setFile([...file,files]);   //add to files array
     }
 
-    //
     const pickImageHandler = () =>{
         filePickerRef.current.click(); //opens file picker
     }
   
     return(
-        <div className = "form-control">
+        <div className = "formImage">
             <input 
                 ref = {filePickerRef}
                 id = {props.id} 
@@ -47,21 +42,22 @@ const ImageUpload = props =>{
             />
 
             <div className = "image-upload">
-                <div className = "image-upload-previed">
-                    {previewUrl &&
-                    <img src = {previewUrl} alt = "preview"></img>
-                    }
+                <div className = "previewImgs">
+                {previewUrl &&
+                previewUrl.map((element, index)=>(
+                    <div className = "image-upload-preview">
+                    {element &&<img src = {element} key = {index} alt = "preview"></img>}
                     {!previewUrl && <p>Please pick an image</p>}
-                    </div>
-
-                <Button type = "button" onClick = {pickImageHandler} text = "Upload Image"></Button>
-
+                     </div>
+                ))
+                }
+                </div>
             </div>
-            {!isValid && <p>{props.errorText}</p>}
+
+            <Button type = "button" onClick = {pickImageHandler} text = "Upload Image"></Button>
+          
         </div>
     )
-
 }
-
 
 export default ImageUpload;
