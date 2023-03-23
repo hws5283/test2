@@ -16,7 +16,7 @@ export default function Atlas(props){
                     <div className = "contentDiv">
                     <button className = "headerBtn" onClick = {() => {props.layerController("Great Shadeck Forest")} }>Great Shadeck Forest</button>
                     </div>
-                    {great_shadeck_forest.map((loc) =>(
+                    {great_shadeck_forest.sort((a, b) => a.feature > b.feature).map((loc) =>(
                     <AtlasMarkerComponent key = {loc.feature} styleInfo = {"h1Regions"} title = {loc.feature} img = {LakeIcon}></AtlasMarkerComponent>
                     ))}
                 </div>
@@ -25,7 +25,7 @@ export default function Atlas(props){
                     <div className = "contentDiv">
                     <button className = "headerBtn-davesDesert" onClick={() =>{props.layerController("LLucian Lake")}}>Dave's Desert</button>
                     </div>
-                    {daves_desert.map((loc) =>(
+                    {daves_desert.sort((a, b) => a.feature > b.feature).map((loc) =>(
                     <AtlasMarkerComponent key = {loc.feature} styleInfo = {"h2Regions"} title = {loc.feature} img={LakeIcon}></AtlasMarkerComponent>
                     ))}
 

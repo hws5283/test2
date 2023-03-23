@@ -53,10 +53,10 @@ const LeftSearch = (props) => {
 
     return(
         <div className = "leftSearch"> 
-        <div className = "test3">
-             <Search
+            <Search
                 onInputChange = {searchInputHandler}
              />
+        <div className = "test3">
              <div className = "leftbuttonDiv">
                 {match.sort((a, b) => a.location.localeCompare(b.location)).map((loc) =>(
                     <ButtonComp

@@ -1,8 +1,5 @@
-.atlasIcon{
-
-}
-
 .atlasEntryContainer{
+    flex: 1;
     padding-bottom: 10px;
 }
 
@@ -50,4 +47,10 @@
     border: 2px solid transparent;
     border-radius: 30px;
     height: 30px;
+}
+
+@media screen and (max-width: 1200px) {
+    .atlasVisual{
+        font-size: clamp(0.55rem, 1.5vw, 1rem);
+    }
 }

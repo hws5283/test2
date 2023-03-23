@@ -4,61 +4,29 @@
 }
 
 .test3{
+    flex: 1;
     background-color: #161922;
-    width:100%; 
     overflow-y: scroll;
-    height: 752px;
+    height:calc(100vh - 104px);
     
 }
 
 .leftbuttonDiv{
     padding-left: 40px;
     padding-bottom: 10px;
-    overflow-y: scroll;  
-    height: 95%;
+}
+
+.leftSearch{
+    width: 335px;
 }
 
 @media screen and (max-width: 1200px) {
-    /* styles for window widths below 1200px */
     .leftSearch{
-        flex-direction: column;
+        width: 50vw !important;
     }
     .test3{
-        background-color: rgb(53, 50, 49);
-        height: 100%;
+        height:250px;
     }
-    .test4{
-        background-color: rgb(53, 50, 49);
-        color: white;
-    }
-    .leftbuttonDiv{
-        padding-left: 40px;
-        padding-bottom: 10px;
-        overflow-y: scroll;  
-        height: 100%;
-    }
-}
-
-@media screen and (min-width: 1200px) {
-    /* styles for window widths above or equal to 1200px */
-    .leftSearch{
-        flex-direction: column;
-    }
-    .test3{
-        background-color: rgb(53, 50, 49);
-        height: 95.2vh;
-    }
-    .test4{
-        background-color: rgb(53, 50, 49);
-        color: white;
-    }
-    .leftbuttonDiv{
-        padding-left: 40px;
-        padding-bottom: 10px;
-        overflow-y: scroll;  
-        height: 95%;
-    }
-    
 }
 
 

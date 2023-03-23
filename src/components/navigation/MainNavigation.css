@@ -50,3 +50,10 @@
       display: block;
     }
   }
+
+  @media screen and (max-width: 550px) {
+    .main-navigation__title {
+      font-size: 1.4rem;
+      padding-top: 10px;
+    }
+  }

@@ -3,15 +3,17 @@
     background-color: #161922;
     z-index: 0;
 }
-.mapDisplaySearch{
-    height:100%;
+.map-container{
+    height: calc(100vh - 64px);
+    width: calc(100vw - 685px);
+    z-index: 0;
 }
 
 .mainDiv{
     display:flex;
+    flex-wrap: wrap;
     background-color:  #161922;
     margin-top: 4rem;
-    height:100vh;
 }
 .displayImages{
         display: grid;
@@ -24,5 +26,25 @@
 }
 .description-body-p{
     min-width: 300px;
+}
+
+@media screen and (max-width: 1200px) {
+    .mapDisplay {
+        order: -1;
+    }
+    .map-container{
+        width: 100vw;
+        height: calc(100vh - 364px);
+        margin-bottom: 10px;
+    }
+    .atlasButtons{
+        display: none;
+    }
+    .MapDisplaySearch{
+        width: 100vw !important;
+    }
+    .atlasBody{
+        width: 50vw !important;
+    }
 }
 

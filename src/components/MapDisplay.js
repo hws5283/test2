@@ -203,7 +203,7 @@ function MapDisplay(props){
             <LeftSearch locations = {Data} eventFunction = {clickHandler}></LeftSearch>
         </div>
 
-        <section className="MapDisplayBody">
+        
         <div className = "mapDisplay">    
         {/*responsible for creating map instance and providing to child components, props used as map options  */
         //NOTE - react leaflet is providing mapping to leaflet js with the use of components MUST LOOK AT BOTH DOCUMENTATIONS
@@ -322,12 +322,11 @@ function MapDisplay(props){
                 ))
                 }  
            </MapContainer>
-        </div>   
-        </section>
+        </div>
       
         <section className="MapDisplayBody">
-        <div>
-            <div data-testid = "mapButtons-1">
+        <div className='atlasBody'>
+            <div className='atlasButtons' data-testid = "mapButtons-1">
                  <MapButtons activation = {centerHandler} activation2 = {zoomOutHandler} activation3 = {zoomInHandler}></MapButtons>
             </div>
             <div>
