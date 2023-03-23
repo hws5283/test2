@@ -1,11 +1,11 @@
 
 .leftSearch{
-    display: flex;
     flex-direction: column;
 }
 
 .test3{
     background-color: rgb(53, 50, 49);
+    height: 95.2vh;
 }
 
 .test4{
@@ -16,7 +16,51 @@
 .leftbuttonDiv{
     padding-left: 40px;
     padding-bottom: 10px;
-    overflow-y: scroll;   
+    overflow-y: scroll;  
+    height: 95%;
+}
+
+@media screen and (max-width: 1200px) {
+    /* styles for window widths below 1200px */
+    .leftSearch{
+        flex-direction: column;
+    }
+    .test3{
+        background-color: rgb(53, 50, 49);
+        height: 100%;
+    }
+    .test4{
+        background-color: rgb(53, 50, 49);
+        color: white;
+    }
+    .leftbuttonDiv{
+        padding-left: 40px;
+        padding-bottom: 10px;
+        overflow-y: scroll;  
+        height: 100%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    /* styles for window widths above or equal to 1200px */
+    .leftSearch{
+        flex-direction: column;
+    }
+    .test3{
+        background-color: rgb(53, 50, 49);
+        height: 95.2vh;
+    }
+    .test4{
+        background-color: rgb(53, 50, 49);
+        color: white;
+    }
+    .leftbuttonDiv{
+        padding-left: 40px;
+        padding-bottom: 10px;
+        overflow-y: scroll;  
+        height: 95%;
+    }
+    
 }
 
 

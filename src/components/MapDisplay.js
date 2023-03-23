@@ -20,11 +20,11 @@ function MapDisplay(props){
     const[loadedMarks, setLoadedMarks] = useState([]);    //loaded marker data
     const[error,setError] = useState();
     const[showLayer, truthy] = useState(false);
-    const[mapHeight, setMapHeight] = useState(window.innerHeight - 48);
-    const [isMinimized, setIsMinimized] = useState(true);
-    const[mapWidth, setMapWidth] = useState(window.innerWidth < 1200 ? 
-        (isMinimized ? window.innerWidth - 40 : window.innerWidth - 320) : 
-        window.innerWidth - 689);
+    // const[mapHeight, setMapHeight] = useState(window.innerHeight - 48);
+    // const [isMinimized, setIsMinimized] = useState(true);
+    // const[mapWidth, setMapWidth] = useState(window.innerWidth < 1200 ? 
+    //     (isMinimized ? window.innerWidth - 40 : window.innerWidth - 320) : 
+    //     window.innerWidth - 689);
 
     //source of map images
     const tileUrl = '../cuts/{z}/{x}/{y}.png';
@@ -89,22 +89,6 @@ function MapDisplay(props){
              markerToOpen.openPopup();           //show the popup display 
         }
     }
-
-    //Updates the size of the map when the window is resized
-    const widthThreshold = 1200;
-    useEffect(() => {
-        const handleResize = () => {
-            const newWidth = 
-                window.innerWidth < widthThreshold ? 
-                (isMinimized ? window.innerWidth - 40 : window.innerWidth - 320) : 
-                window.innerWidth - 689;
-            setMapHeight(window.innerHeight - 48);
-            setMapWidth(newWidth);
-            window.location.reload();
-        };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, [isMinimized]);
     
 
     //center map, function passed as prop to mapButtons
@@ -134,13 +118,13 @@ function MapDisplay(props){
     */
     return(
 
-    <div className = "mainDiv" data-testid = "mapDisplay-1" style={{ height:mapHeight }}>
-        <div>
+    <div className = "mainDiv" data-testid = "mapDisplay-1">
+        <div className = "leftSearch">
             <LeftSearch 
                 data-testid = "leftSearch-1" 
                 locations = {Data} eventFunction = {clickHandler} 
-                isMinimized={isMinimized} 
-                setIsMinimized={setIsMinimized}
+                //isMinimized={isMinimized} 
+                //setIsMinimized={setIsMinimized}
             ></LeftSearch>
         </div>
         <div className = "mapDisplay">    
@@ -154,7 +138,6 @@ function MapDisplay(props){
                 center={[0,0]} 
                 zoom={3} 
                 scrollWheelZoom={true} 
-                style = {{height: mapHeight, width: mapWidth}}
                >
 
                 {showLayer &&
@@ -238,8 +221,8 @@ function MapDisplay(props){
             
            </MapContainer>
         </div> 
-        { (window.innerWidth > widthThreshold) &&  
-        <div>
+        { (window.innerWidth > 1200) &&  
+        <div className = "atlas">
             <div data-testid = "mapButtons-1">
                  <MapButtons activation = {centerHandler} activation2 = {zoomOutHandler} activation3 = {zoomInHandler}></MapButtons>
             </div>

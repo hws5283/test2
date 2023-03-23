@@ -20,7 +20,7 @@ const LeftSearch = (props) => {
     const [scrollHeight, setScrollHeight] = useState(window.innerHeight - 88);
     const { isMinimized, setIsMinimized } = props;
     const [searchWidth, setSearchWidth] = useState((window.innerWidth > 1200 && isMinimized) ? 320 : 30);
-    //Updates the component when the window is resized
+    // Updates the component when the window is resized
     useEffect(() => {
         const handleResize = () => {
           setScrollHeight(window.innerHeight - 88);
@@ -60,7 +60,7 @@ const LeftSearch = (props) => {
              <Search
                 onInputChange = {searchInputHandler}
              />
-             <div className = "leftbuttonDiv" style={{ height: scrollHeight, width: searchWidth}}>
+             <div className = "leftbuttonDiv">
                 {match.sort((a, b) => a.location.localeCompare(b.location)).map((loc) =>(
                     <ButtonComp
                         key = {loc.location}
@@ -77,7 +77,7 @@ const LeftSearch = (props) => {
             <Search
             onInputChange = {searchInputHandler}
             />)}
-        <div className="leftbuttonDiv" style={{ height: scrollHeight + 40, width: isMinimized ? 30 : 320 }}>
+        <div className="leftbuttonDiv" >
           {!isMinimized && (
             match
               .sort((a, b) => a.location.localeCompare(b.location))
