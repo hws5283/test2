@@ -8,7 +8,8 @@ import { VALIDATOR_MINLENGTH } from '../../utils/validators'
 import ImageUpload from './ImageUpload'
 import { AuthContext } from '../general/context/auth-context';
 import LoadingSpinner from '../general/LoadingSpinner';
-import {useForm} from './updateForm-hook'
+import FormButton from './FormButton'
+import Modal from '../general/Modal';
 //THIS PAGE DEALS WITH UPDATING MAP COMPONENTS IT GENERATES A TEXTBOX AND IMAGE UPLOAD BUTTON WITH A SUBMIT FOR BUTTON
 export default function Update(){
 
@@ -16,7 +17,7 @@ export default function Update(){
     const auth = useContext(AuthContext);
     const[isLoading,setIsLoading] = useState(false);    //controls the loading spinner
     const[successStatus, setSuccess] = useState(false);
-
+    const[showOverlay, setShowOverLay] = useState(false);
 
     const changeReducer = (state,action) =>{
         switch(action.type){
@@ -35,7 +36,15 @@ export default function Update(){
             case "IMAGE_CHANGE":
                   return{
                     ...state,
-                    images: {formFiles: action.formFiles}
+                    images: {formFiles: action.formFiles},
+                    fileCount: {value: state.fileCount.value + 1}
+                  }
+            case "REMOVE_IMAGE":
+                console.log(action.formFiles);
+                  return{
+                    ...state,
+                    images: {formFiles: action.formFiles},
+                    fileCount: {value: state.fileCount.value -1}
                   }
             default:
                 return state;
@@ -52,11 +61,20 @@ export default function Update(){
               },
               images: {             
                 formFiles: [],
+              },
+              fileCount:{
+                value: 0,
               }
         },
       );
-  
-    
+
+    const closeModalHandler = () => {
+        setShowOverLay(false);
+    }
+    const openModalHandler = () => {
+        setShowOverLay(true);
+    }
+        
     useEffect(()=>{
         const fetchPlace = async () =>{
             console.log("usestate called");
@@ -78,11 +96,16 @@ export default function Update(){
         fetchPlace();
     },[formState.selection.value]);  //should only be called when dropdown changes and on initial render 
     
-    //function called on submition of the html form 
-    
-    const markerUpdateSubmitHandler =  async (event) =>{   
+
+    const formSubmitHandler = async (event)=>{
         event.preventDefault(); //NEEDTHIS
         console.log("update request sent");
+        setShowOverLay(true);
+    }
+    
+    const markerUpdateSubmitHandler =  async (event) =>{   
+        
+        setShowOverLay(false);
         setIsLoading(true);
         //NOTE, USING PROTECTED ROUTE HERE, WE MUST PROVIDE A TOKEN!!!, or this request wont work -> check backend code
         const url = `http://localhost:5000/api/places/upload/${formState.selection.value}`;  
@@ -111,24 +134,45 @@ export default function Update(){
         setIsLoading(false);
     }
     
-    
-
     //All components here need a pointer to the inputHandler function from the useform hook ***
   
     const checkData = () =>{
         console.log(formState.selection.value);
         console.log(formState.description.value);
         console.log(formState.images.formFiles);
+        console.log(formState.fileCount.value);
     }
     
     return(
+        <React.Fragment>
+        <Modal 
+        show = {showOverlay} 
+        onCancel = {closeModalHandler} 
+        header = {"Update Point"}
+        headerClass="_fail"
+        contentClass = "place-item__modal-content"
+        footerClass = "place-item__modal-actions"
+        footer = {
+            <React.Fragment>
+                <FormButton onClick = {markerUpdateSubmitHandler} text = {"Yes"}></FormButton>
+                <FormButton onClick = {closeModalHandler} text = {"No"}></FormButton>
+            </React.Fragment>    
+                }
+        >
+            <p>Are you sure you want to update this marker, this cannot be undone from this form. 
+                <br></br> 
+                Close this form and check data again if needed.
+            </p>
+        </Modal>
+
         <div className = "updateDiv">
             <div>
                 <button onClick = {checkData}>test button</button>
             </div>
+
         <div className = "formDiv">
-        {loadedPlace &&
-        <form className = "updateForm" onSubmit={markerUpdateSubmitHandler} >
+      
+        <form className = "updateForm" onSubmit={formSubmitHandler}>
             <div className = "selectComponent">
                 <Selection reducer = {dispatch} id = "selection"></Selection>   
             </div>
@@ -163,9 +207,10 @@ export default function Update(){
             {isLoading && <LoadingSpinner asOverlay/>}
         </form>
         
-        }
+        
         </div>
         </div>
+        </React.Fragment>
     )
 }
 

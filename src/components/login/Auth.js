@@ -7,6 +7,8 @@ import './Auth.css'
 import { AuthContext } from '../general/context/auth-context';
 import LoadingSpinner from '../general/LoadingSpinner'
 import Button from '../formComponents/FormButton'
+import Modal from '../general/Modal';
+import FormButton from '../formComponents/FormButton'
 
 //end goal, want the form to have its own validation, sum up all validation
 //of form inputs and decide of a valid form or not 
@@ -16,6 +18,7 @@ const Auth = ()=>{
     //returns context value for calling component 
     const auth = useContext(AuthContext);
     const[isLoading,setIsLoading] = useState(false);
+    const[showOverlay, setShowOverLay] = useState(false);
     //initialize usereducer in hook, using custom hook here
     //this is the only place weve used this custom hook ****
     const [formState,inputHandler] = useLogin(
@@ -31,6 +34,10 @@ const Auth = ()=>{
         },
         false  //initial form validity
     );
+
+    const closeModalHandler = () => setShowOverLay(false);
+    const openModalHandler = () => setShowOverLay(true)
+
 
     //logic after form submition
     const authSubmitHandler = async (event) =>{
@@ -48,8 +55,12 @@ const Auth = ()=>{
                 })
             });
             const responseData = await response.json();  //response includes our token
-            if(!response.ok){                           
+            if(!response.ok){     
+                setShowOverLay(true);                      
                 throw new Error(responseData.message);
+            }
+            else{
+               
             }
             auth.login(responseData.userId, responseData.token);  //send userId and token to context 
         }catch(err){
@@ -59,6 +70,21 @@ const Auth = ()=>{
     }
 
     return(
+
+        <React.Fragment>
+            <Modal 
+                show = {showOverlay} 
+                onCancel = {closeModalHandler} 
+                header = {"Login Failed!"}
+                headerClass="_fail"
+                contentClass = "place-item__modal-content"
+                footerClass = "place-item__modal-actions"
+                footer = {<FormButton onClick = {closeModalHandler} text = {"OK"}></FormButton>}
+                >
+                <div className = "map-container">
+                    <h2>Incorrect username or password</h2>
+                </div>
+            </Modal>
 
         <section className = "loginSection">
         <div className = "loginDiv">
@@ -92,6 +118,7 @@ const Auth = ()=>{
         </Card>
         </div>
         </section>
+        </React.Fragment>
 
     )
 
