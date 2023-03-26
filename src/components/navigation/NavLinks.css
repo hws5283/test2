@@ -21,6 +21,7 @@
     padding: 0.5rem;
     font-weight: bold;
     border-radius: 20px;
+    transition: .4s;
   }
   
   .nav-links a:hover,

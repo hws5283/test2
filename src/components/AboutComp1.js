@@ -8,7 +8,7 @@ function AboutComp1() {
     
       <section className="about">
         <div className="content">
-            <img src={profile} alt = "Lee Shadeck"/> 
+            <img src={profile} alt = "Lee Shadeck"/>
             <div className="text">
                 <h1>About <span>Lee's Map</span></h1>
                 <h5>Interactive Map</h5>
@@ -20,6 +20,16 @@ function AboutComp1() {
                     <button type="button" className="aboutBtn">More About Lee</button>
                 </Link>
             </div>
+            
+        </div>
+
+        <div className="content2">
+            <div className="text">
+                <h1>How it <span>started</span></h1>
+                <h5>Placeholder subtitle</h5>
+                <p>Placeholder for a paragraph for future iterations. Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc. In reality, though, the unity and coherence of ideas among sentences is what constitutes a paragraph. Ultimately, a paragraph is a sentence or group of sentences that support one main idea. In this handout, we will refer to this as the “controlling idea,” because it controls what happens in the rest of the paragraph.</p>
+            </div>
+            <img src={map} alt = "Map"/>
         </div>
       </section>
     
