@@ -25,7 +25,7 @@
 
 @media screen and (max-width: 1200px) {
     .mapDisplay {
-        order: -1 !important;
+        order: -1;
     }
     .map-container{
         width: 100vw !important;
