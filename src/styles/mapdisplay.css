@@ -4,8 +4,8 @@
     z-index: 0;
 }
 .map-container{
-    height: calc(100vh - 64px);
-    width: calc(100vw - 685px);
+    height: calc(100vh - 64px) !important;
+    width: calc(100vw - 685px) !important;
     z-index: 0;
 }
 .content-div{
@@ -28,8 +28,8 @@
         order: -1;
     }
     .map-container{
-        width: 100vw;
-        height: calc(100vh - 364px);
+        width: 100vw !important;
+        height: calc(100vh - 364px) !important;
         margin-bottom: 10px;
     }
     .atlasButtons{
