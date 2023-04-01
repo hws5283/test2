@@ -1,0 +1,23 @@
+.content-div{
+    width: auto;
+    height: auto;
+}
+
+.displayImages-grid{
+      
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    grid-auto-flow: row dense;
+    gap: 10px;
+}
+
+.popUpimg{
+    height: auto;
+    width: auto;
+}
+
+.description-body-p{
+    max-width: 500px;
+    min-width: 300px;
+}

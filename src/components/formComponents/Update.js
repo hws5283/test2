@@ -51,6 +51,7 @@ export default function Update(){
         }
     }
    
+    //we manage the form state inside the update component
     const [formState, dispatch] = useReducer(changeReducer,              
         {
             selection: {

@@ -6,6 +6,10 @@
 .mapDisplaySearch{
     height:100%;
 }
+.content-div{
+    width: auto;
+    height: auto;
+}
 
 .mainDiv{
     display:flex;
@@ -13,16 +17,7 @@
     margin-top: 4rem;
     height:100vh;
 }
-.displayImages{
-        display: grid;
-        grid-template-columns: auto auto;
-        grid-auto-flow: row dense;
-        gap: 10px;
-}
-.description-body{
-    max-width:300px;
-}
-.description-body-p{
-    min-width: 300px;
-}
+
+
+
 

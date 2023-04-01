@@ -7,9 +7,12 @@ import OceanIcon from '../navImages/oceanIconClear.png'
 import LakeIcon from '../navImages/lakeIconUse.png'
 import IceIcon from '../navImages/iceV2.png'
 import CoastIcon from '../navImages/coastal.png'
+import DesertIcon from '../navImages/desertV5.png'
+import PondIcon from '../navImages/pondV1.png'
 import LeftSearch from './leftSearch'
 import MapButtons from './MapButtons'
 import Atlas from './Atlas'
+import PopupContent from './mapComponents/PopupContent'
 import '../styles/mapdisplay.css'
 import Data from '../devInfo/mapLocations'
 import {useSelector, useDispatch} from 'react-redux';
@@ -25,6 +28,8 @@ function MapDisplay(props){
     const[showLayerGSF, showGSF] = useState(false);
     const[showLayerLake, showLLk] = useState(false);
     const [btnRef,setButtonRef] = useState();
+    const popUpRef = useRef();
+    const [update, setUpdate] = useState(false);
     const dispatch = useDispatch();
 
     //this effect is responsible for using the api and getting only the coordinates and name of all markers from controller
@@ -49,6 +54,7 @@ function MapDisplay(props){
         }
         sendGetLocations();   //call the function  **
     },[]);   //only called when page renders, no dependencies to call this again
+
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
     //utilizes react leaflet events -> function executes when marker is clicked, given name of marker 
@@ -61,12 +67,12 @@ function MapDisplay(props){
             }
             else{
                 //we got a response...
-                console.log(responseData);
+                setMarker(responseData.placebyName);  //set object 
             }
-            setMarker(responseData.placebyName);  //set object 
         }catch(err){
             console.log(err);
         }
+        
      }
 
      //the map ref
@@ -74,10 +80,10 @@ function MapDisplay(props){
     //source of map images
     const tileUrl = '../cutsv2/{z}/{x}/{y}.png';
     const center = [0,0];
-    const fillBlueOptions = { color: "orange"};
+    const fillBlueOptions = { color: "#00cc66"};
     const bounds = [
-        [600,-500],
-        [-100, 200],
+        [200,-200],
+        [-200, 200],
     ]
 
     //map icons 
@@ -108,6 +114,16 @@ function MapDisplay(props){
 
     const coastSymbol = new L.Icon({
         iconUrl: CoastIcon,
+        iconSize:[26,26]
+    });
+
+    const desertSymbol = new L.Icon({
+        iconUrl: DesertIcon,
+        iconSize:[26,26]
+    });
+
+    const pondSymbol = new L.Icon({
+        iconUrl: PondIcon,
         iconSize:[26,26]
     });
     //NOTE ****
@@ -171,6 +187,7 @@ function MapDisplay(props){
                 showLLk(false); 
         }
     }
+
     //returns the correct icon based on document area string to show different markers 
     //just check what the field is in the mongodb document
     const iconSelector = (area) =>{
@@ -192,9 +209,17 @@ function MapDisplay(props){
         if(area === "coast"){
             return coastSymbol
         }
+        if(area ==="desert"){
+            return desertSymbol
+        }
+        if(area === "pond"){
+            return pondSymbol;
+        }
         else
         return woodSymbol
     }
+
+   
     return(
         
     <div className = "mainDiv" data-testid = "mapDisplay-1">
@@ -217,7 +242,7 @@ function MapDisplay(props){
                 style = {{height: "752px", width: "800px"}}
                >
                 {showLayerGSF &&
-                    <Circle center = {[-20,15]} pathOptions ={fillBlueOptions} radius = {4600000}>
+                    <Circle center = {[-40,15]} pathOptions ={fillBlueOptions} radius = {7000000}>
                         <Popup>
                             One of the predominant features on the map is my surname.  
                             Those closest to me; for the longest periods of time are adjacent
@@ -276,47 +301,16 @@ function MapDisplay(props){
                        dispatch({type: 'markerClose'});      
                        popUpCloseHandler();
                     },
-                    popupopen:()=>{     //called wether you click a button on the left or open a marker manually*
+                    popupopen:(e)=>{     //called wether you click a button on the left or open a marker manually*
+                       popUpRef.current.update();
                        dispatch({type: 'markerOpen', name:location.title});
-                       //popUpOpenHandler();
+                       setUpdate(true);
                     }
                     }}
                 >
-                <Popup maxWidth = {"auto"} maxHeight = {500} minWidth = {500}>
+                <Popup maxWidth={800} minWidth = {300} ref = {popUpRef}>
                     {clickedMarker && location.title === clickedMarker.title &&
-                    
-                    <div className ="content-div">
-                    <div className = "displayImages">
-                     {clickedMarker.img &&
-                        clickedMarker.img.map((element)=>(
-                            <div className = "image">
-                            <img src={element} alt= "marker resource"></img>
-                            </div>
-                        ))
-                     }
-                     </div>
-                 
-                    <div>
-                     <h1>{location.title}</h1>
-                    </div>
-                    <div className = "description-body">
-                        <p className = "description-body-p">
-                            {clickedMarker.description}
-                        </p>
-                    </div>
-                    {clickedMarker.link &&
-                    <div className = "link-data">
-                        {clickedMarker.link &&
-                            clickedMarker.link.map((element)=>(
-                                <div>
-                                <a href = {element}>More Information About {location.title} </a>
-                                <br></br>
-                                </div>
-                            ))
-                        }
-                    </div>
-                    }
-                    </div>                    
+                        <PopupContent activeMarker = {clickedMarker}></PopupContent>  
                     }
                 </Popup>
                 </Marker>   
@@ -332,7 +326,7 @@ function MapDisplay(props){
                  <MapButtons activation = {centerHandler} activation2 = {zoomOutHandler} activation3 = {zoomInHandler}></MapButtons>
             </div>
             <div>
-                 <Atlas layerController = {testLayerFunction} ></Atlas>
+                 <Atlas layerController = {testLayerFunction}></Atlas>
             </div>
         </div>   
         </section>

@@ -3,12 +3,31 @@ import section1 from "../devInfo/gsf.json"
 import section2 from "../devInfo/dd.json"
 import AtlasMarkerComponent from "./AtlasMakrerComponent"
 import LakeIcon from "../navImages/lakeIconUse.png"
-import {useEffect, useState} from 'react'
+import CoastIcon from "../navImages/coastal.png"
+import MntIcon from "../navImages/mountainIconV2.png"
+import OceanIcon from "../navImages/oceanIconClear.png"
+import TreeIcon from "../navImages/treeIconV2.png"
+import DesertIcon from "../navImages/desertV5.png"
 import "../styles/atlasbuttons.css"
 export default function Atlas(props){
 
     const great_shadeck_forest = section1;
     const daves_desert = section2
+
+    const selector = (area) =>{
+            if(area === "lake")
+                return LakeIcon;
+            if(area === "alpine")
+                return MntIcon;
+            if(area === "coast")
+                return CoastIcon;
+            if(area === "ocean")
+                return OceanIcon;
+            if(area === "woodlands")
+                return TreeIcon;
+            if(area ==="desert")
+                return DesertIcon;
+    }
 
     return (
             <div className = "buttonDiv">
@@ -17,7 +36,7 @@ export default function Atlas(props){
                     <button className = "headerBtn" onClick = {() => {props.layerController("Great Shadeck Forest")} }>Great Shadeck Forest</button>
                     </div>
                     {great_shadeck_forest.map((loc) =>(
-                    <AtlasMarkerComponent key = {loc.feature} styleInfo = {"h1Regions"} title = {loc.feature} img = {LakeIcon}></AtlasMarkerComponent>
+                    <AtlasMarkerComponent key = {loc.feature} styleInfo = {"h1Regions"} title = {loc.feature} img = {selector(loc.type)}></AtlasMarkerComponent>
                     ))}
                 </div>
 
