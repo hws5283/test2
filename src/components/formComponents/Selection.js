@@ -3,9 +3,6 @@ import { propTypes } from 'react-bootstrap/esm/Image'
 import Data from '../../devInfo/updateLocations.json'
 import '../../styles/selection.css'
 
-
-
-
 export default function Selection(props){
 
    const changeHandler = (event)=>{

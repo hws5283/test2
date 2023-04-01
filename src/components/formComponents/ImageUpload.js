@@ -22,8 +22,28 @@ const ImageUpload = props =>{
             type: "IMAGE_CHANGE",
             formFiles: ([...file,files])
         })
-    
         setFile([...file,files]);   //add to files array
+    }
+
+    const removeImageHandler = ()=>{
+        const prevArrayCopy = [...previewUrl];
+        prevArrayCopy.splice(-1);
+        setPreviewUrl(prevArrayCopy);
+
+        const fileArray = [...file];
+        fileArray.splice(-1);
+        console.log(fileArray);
+        setFile(fileArray)
+
+        props.reducer({
+             type:"REMOVE_IMAGE",
+             formFiles: (fileArray)
+        })
+
+    }
+
+    const test = ()=>{
+        console.log(previewUrl);
     }
 
     const pickImageHandler = () =>{
@@ -54,8 +74,10 @@ const ImageUpload = props =>{
                 </div>
             </div>
 
-            <Button type = "button" onClick = {pickImageHandler} text = "Upload Image"></Button>
-          
+
+            <Button type = "button" onClick = {removeImageHandler} text = "-"></Button>
+            <Button type = "button" onClick = {pickImageHandler} text = "+"></Button>
+            <Button type = "button" onClick = {test} text = "Test"></Button>
         </div>
     )
 }

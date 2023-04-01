@@ -8,6 +8,10 @@
     width: calc(100vw - 685px);
     z-index: 0;
 }
+.content-div{
+    width: auto;
+    height: auto;
+}
 
 .mainDiv{
     display:flex;
@@ -15,18 +19,9 @@
     background-color:  #161922;
     margin-top: 4rem;
 }
-.displayImages{
-        display: grid;
-        grid-template-columns: auto auto;
-        grid-auto-flow: row dense;
-        gap: 10px;
-}
-.description-body{
-    max-width:300px;
-}
-.description-body-p{
-    min-width: 300px;
-}
+
+
+
 
 @media screen and (max-width: 1200px) {
     .mapDisplay {

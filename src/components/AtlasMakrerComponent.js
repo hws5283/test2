@@ -5,8 +5,16 @@ import {useSelector} from 'react-redux';
 
 function AtlasMarkerComponent(props){
 
+    //subscribe to redux store and get peice of state object -> changes in this state cause re renders...
     const name = useSelector(state => state.markerName);
     const banner = useRef();
+
+    //triggered for all atlasMarker components on name change -> get from redux store...
+    useEffect(()=>{
+        if(name === props.title){
+            banner.current.scrollIntoView({behavior:"smooth"});
+        }
+    },[name])
 
     return(
         <div className = "atlasEntryContainer">

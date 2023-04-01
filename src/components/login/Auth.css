@@ -83,4 +83,10 @@
     .button--big {
       font-size: 1.5rem;
     }
+
+    .map-container{
+      height:20rem;
+      width: 100%;
+    }
+    
   
