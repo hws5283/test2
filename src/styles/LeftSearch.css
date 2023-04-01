@@ -1,16 +1,32 @@
 
+.leftSearch{
+    flex-direction: column;
+}
+
 .test3{
+    flex: 1;
     background-color: #161922;
-    width:100%; 
     overflow-y: scroll;
-    height: 752px;
+    height:calc(100vh - 104px);
     
 }
 
 .leftbuttonDiv{
     padding-left: 40px;
     padding-bottom: 10px;
-   
+}
+
+.leftSearch{
+    width: 335px;
+}
+
+@media screen and (max-width: 1200px) {
+    .leftSearch{
+        width: 50vw !important;
+    }
+    .test3{
+        height:250px;
+    }
 }
 
 

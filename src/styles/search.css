@@ -4,5 +4,11 @@
 }
 
 .search{
-    width: 320px;
+    width: 335px;
+}
+
+@media screen and (max-width: 1200px) {
+    .search{
+        width: 100%;
+    }
 }
