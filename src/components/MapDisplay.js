@@ -317,7 +317,6 @@ function MapDisplay(props){
                 }  
            </MapContainer>
         </div>
-
         <div className='atlasBody'>
             <div className='atlasButtons' data-testid = "mapButtons-1">
                  <MapButtons activation = {centerHandler} activation2 = {zoomOutHandler} activation3 = {zoomInHandler}></MapButtons>
